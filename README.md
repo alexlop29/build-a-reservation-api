@@ -5,7 +5,7 @@ Contains a REST API to facilitate booking appointments between providers and cli
 ## 🏄 Getting Started
 
 ```
-docker-compose up --build -d
+docker-compose up --build -d --force-recreate
 docker-compose down
 ```
 
@@ -30,8 +30,8 @@ docker-compose down
 - [nodemon](https://nodemon.io)
 - [typedoc](https://typedoc.org)
 - [sentry](https://docs.sentry.io/platforms/node/guides/express/?original_referrer=https%3A%2F%2Fwww.google.com%2F)
-- postman
-- Docker
+- [postman](https://www.postman.com)
+- [docker](https://docs.docker.com/)
 
 ### 📛 Types
 

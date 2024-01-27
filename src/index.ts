@@ -39,11 +39,16 @@ app.get("/debug-sentry", function mainHandler(_req, _res) {
 app.use(Sentry.Handlers.errorHandler());
 
 // // Optional fallthrough error handler
-// app.use(function onError(_err, _req, res, _next) {
-//   // The error id is attached to `res.sentry` to be returned
-//   // and optionally displayed to the user for support.
-//   res.statusCode = 500;
-//   res.end(res.sentry + "\n");
-// });
+app.use(function onError(
+  _err: Error,
+  _req: express.Request,
+  res: express.Response,
+  _next: express.NextFunction,
+) {
+  // The error id is attached to `res.sentry` to be returned
+  // and optionally displayed to the user for support.
+  res.statusCode = 500;
+  res.end("\n");
+});
 
 app.listen(3000);

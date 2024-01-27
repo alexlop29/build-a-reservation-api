@@ -13,6 +13,7 @@
   },
   "license": "MIT",
   "dependencies": {
+    "@sentry/cli": "^2.26.0",
     "@sentry/node": "^7.98.0",
     "@sentry/profiling-node": "^1.3.5",
     "dotenv": "^16.4.1",
@@ -31,6 +32,7 @@
   ],
   "typings": "./lib/index.d.ts",
   "scripts": {
+    "build-with-sentry": "tsc && yarn sentry:sourcemaps",
     "build": "tsc",
     "lint": "tslint -c tslint.json src/**/*.ts",
     "prepublish": "npm run build",
@@ -38,7 +40,8 @@
     "prettier": "npx prettier . --write",
     "test": "jest --detectOpenHandles --config src/tests/jest.config.json",
     "typedoc": "npx typedoc src/typedoc.ts",
-    "start": "DEBUG=express:* nodemon src.index.ts"
+    "start": "DEBUG=express:* nodemon src.index.ts",
+    "sentry:sourcemaps": "sentry-cli sourcemaps inject --org alexander-lopez --project node-express-sm ./out && sentry-cli sourcemaps upload --org alexander-lopez --project node-express-sm ./out"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
