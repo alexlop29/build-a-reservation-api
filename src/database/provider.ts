@@ -3,7 +3,7 @@ import { mongoose } from "../config/mongoose";
 const uniqueValidator = require("mongoose-unique-validator");
 import { isEmail, isMobilePhone } from "validator";
 
-const client = new Schema({
+const provider = new Schema({
   firstName: {
     type: String,
     required: true,
@@ -23,10 +23,14 @@ const client = new Schema({
     required: true,
     validate: [isMobilePhone, "Invalid Phone Number"],
   },
+  availabilities: {
+    type: String, // Will replace with object from Availability model
+    required: true,
+  },
 });
 
-client.plugin(uniqueValidator);
+provider.plugin(uniqueValidator);
 
-const clients = mongoose.model("clients", client);
+const providers = mongoose.model("providers", provider);
 
-export { clients };
+export { providers };

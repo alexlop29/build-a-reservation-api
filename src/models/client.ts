@@ -36,3 +36,5 @@ class Client {
     }
   }
 }
+
+export { Client };

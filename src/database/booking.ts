@@ -1,15 +1,14 @@
 import { Schema } from "mongoose";
+import { mongoose } from "../config/mongoose";
 
 /*
 NOTE: (ALopez) Reminder to:
-- Replace the clientId type to ObjectID
-- Add validation to the booking class to confirm startAt and endAt
-are exactly fifteen minutes apart.
+- Replace the clientId, providerId type to ObjectID
 - Add validation to confirm status is one of the following
 "BOOKED", "CONFIRMED", "COMPLETED", "CANCELED", "NO SHOW"
 - May want to consider background jobs to clean up canceled appointments
 */
-const bookingSchema = new Schema({
+const booking = new Schema({
   clientId: {
     type: String,
     required: true,
@@ -22,7 +21,7 @@ const bookingSchema = new Schema({
     type: Date,
     required: true,
   },
-  endAt: {
+  updatedAt: {
     type: Date,
     required: true,
   },
@@ -32,4 +31,6 @@ const bookingSchema = new Schema({
   },
 });
 
-export { bookingSchema };
+const bookings = mongoose.model("bookings", booking);
+
+export { bookings };

@@ -45,6 +45,11 @@ docker-compose down
 - Use of `npm --force` to install [mongoose-unique-validator](https://www.npmjs.com/package/mongoose-unique-validator)
 
 # 🚧 To Do
+
 - Working on schemas, models
 - Work on controllers
 - Work on tests
+- Add indexes on the models
+- Include Mongoose ODM best practices
+- Include Express.js best practices
+- Need to account for timezone differences
