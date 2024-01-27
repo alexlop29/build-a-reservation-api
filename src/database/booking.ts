@@ -8,16 +8,18 @@ NOTE: (ALopez) Reminder to:
 "BOOKED", "CONFIRMED", "COMPLETED", "CANCELED", "NO SHOW"
 - May want to consider background jobs to clean up canceled appointments
 */
-const booking = new Schema({
+const bookingSchema = new Schema({
   clientId: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "clients",
     required: true,
   },
   providerId: {
-    type: String,
+    type: Schema.Types.ObjectId,
+    ref: "providers",
     required: true,
   },
-  startAt: {
+  startsAt: {
     type: Date,
     required: true,
   },
@@ -31,6 +33,6 @@ const booking = new Schema({
   },
 });
 
-const bookings = mongoose.model("bookings", booking);
+const booking = mongoose.model("bookings", bookingSchema);
 
-export { bookings };
+export { booking };

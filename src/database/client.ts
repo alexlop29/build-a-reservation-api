@@ -3,7 +3,7 @@ import { mongoose } from "../config/mongoose";
 const uniqueValidator = require("mongoose-unique-validator");
 import { isEmail, isMobilePhone } from "validator";
 
-const client = new Schema({
+const clientSchema = new Schema({
   firstName: {
     type: String,
     required: true,
@@ -25,8 +25,8 @@ const client = new Schema({
   },
 });
 
-client.plugin(uniqueValidator);
+clientSchema.plugin(uniqueValidator);
 
-const clients = mongoose.model("clients", client);
+const client = mongoose.model("clients", clientSchema);
 
-export { clients };
+export { client };

@@ -1,4 +1,3 @@
-export { clients } from "./client.js";
-export { providers } from "./provider.js";
-export { appointments } from "./appointments.js";
-export { appointment } from "./appointment.js";
+export { client } from "./client.js";
+export { provider } from "./provider.js";
+export { booking } from "./booking.js";
