@@ -16,7 +16,7 @@ docker-compose down
 - [Express.js](https://expressjs.com/)
 - [dotenv](https://www.npmjs.com/package/dotenv)
 - [mongoose-unique-validator](https://www.npmjs.com/package/mongoose-unique-validator)
-- [Validator.js](https://www.npmjs.com/package/validatorjs)
+- [Validator.js](https://github.com/validatorjs/validator.js)
 
 ### 💻 Development Libraries
 
@@ -38,7 +38,13 @@ docker-compose down
 - [@types/jest](https://www.npmjs.com/package/@types/jest)
 - [@types/express](https://www.npmjs.com/package/@types/express)
 - [@types/sinon](https://www.npmjs.com/package/@types/sinon)
+- [@types/validator](https://www.npmjs.com/package/@types/validator)
 
 # Disclaimers
 
 - Use of `npm --force` to install [mongoose-unique-validator](https://www.npmjs.com/package/mongoose-unique-validator)
+
+# 🚧 To Do
+- Working on schemas, models
+- Work on controllers
+- Work on tests
