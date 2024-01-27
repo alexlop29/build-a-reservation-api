@@ -4,6 +4,9 @@ const uniqueValidator = require("mongoose-unique-validator");
 import { isEmail, isMobilePhone } from "validator";
 import { availability } from "./availability";
 
+/*
+- May want additional input validation on the time ranges
+*/
 const providerSchema = new Schema({
   firstName: {
     type: String,

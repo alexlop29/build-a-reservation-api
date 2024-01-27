@@ -3,6 +3,7 @@ import { booking } from "../database/index.js";
 import { Response, ResponseError } from "../handlers/index.js";
 import { isIn } from "validator";
 
+// Need an easy way to retrieve the booking
 class Booking {
   booking;
 
@@ -38,9 +39,14 @@ class Booking {
     }
   }
 
-  async create() {}
-
-  async update() {}
+  async save(): Promise<Response | ResponseError> {
+    try {
+      await this.booking?.save();
+      return new Response(200, "OK");
+    } catch (error: any) {
+      throw new ResponseError(500, "Internal Server Error");
+    }
+  }
 }
 
 export { Booking };
