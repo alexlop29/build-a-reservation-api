@@ -18,6 +18,7 @@ docker-compose down
 - [mongoose-unique-validator](https://www.npmjs.com/package/mongoose-unique-validator)
 - [Validator.js](https://github.com/validatorjs/validator.js)
 - [Moment.js](https://momentjs.com)
+- [bullmq](https://bullmq.io)
 
 ### 💻 Development Libraries
 

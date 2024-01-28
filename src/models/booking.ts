@@ -2,6 +2,7 @@ import { Schema } from "mongoose";
 import { booking } from "../database/index.js";
 import { Response, ResponseError } from "../handlers/index.js";
 import { isIn } from "validator";
+const moment = require("moment");
 
 // Need an easy way to retrieve the booking
 class Booking {
@@ -34,8 +35,17 @@ class Booking {
         "CANCELED",
         "INCOMPLETE",
       ]);
+      this.validateTime();
       return new Response(200, "OK");
     } catch (error: any) {
+      throw new ResponseError(400, "Bad Request");
+    }
+  }
+
+  private async validateTime(): Promise<Response | ResponseError> {
+    if (moment(this.startsAt).isAfter(moment().add("h", 24))) {
+      return new Response(200, "OK");
+    } else {
       throw new ResponseError(400, "Bad Request");
     }
   }

@@ -1,9 +1,14 @@
 import { availability, provider } from "../database/index.js";
 import { ResponseError, Response } from "../handlers/index.js";
+import { booking } from "../database/index.js";
+import { getTimeSlots } from "../helpers/getTimeSlots.js";
+import { Booking } from "../types/booking.js";
 
 // The 15min time slots can be hanlded by the Booking Controller
 class Provider {
   profile;
+  id: string = "";
+  availableSlots: string[] = [];
 
   constructor(
     private readonly firstName: string,
@@ -21,6 +26,21 @@ class Provider {
     });
   }
 
+  async availability(): Promise<Response | ResponseError> {
+    try {
+      let bookings = await booking.find({ providerId: this.id });
+      let timeSlots = await getTimeSlots();
+      bookings.forEach((booking: Booking) => {
+        let index = timeSlots.indexOf(String(booking.startsAt));
+        timeSlots.splice(index, 1);
+      });
+      this.availableSlots = timeSlots;
+      return new Response(200, "OK");
+    } catch (error) {
+      throw new ResponseError(500, "Internal Server Error");
+    }
+  }
+
   async validate(): Promise<Response | ResponseError> {
     try {
       await this.profile?.validate();
@@ -32,7 +52,8 @@ class Provider {
 
   async save(): Promise<Response | ResponseError> {
     try {
-      await this.profile?.save();
+      let provider = await this.profile?.save();
+      this.id = provider._id;
       return new Response(200, "OK");
     } catch (error: any) {
       throw new ResponseError(500, "Internal Server Error");
