@@ -10,8 +10,8 @@ class Booking {
   id: string = "";
 
   constructor(
-    private readonly clientId: Schema.Types.ObjectId,
-    private readonly providerId: Schema.Types.ObjectId,
+    private readonly clientId: string,
+    private readonly providerId: string,
     private readonly startsAt: Date,
     private readonly updatedAt: Date,
     private readonly status: string,
@@ -35,6 +35,9 @@ class Booking {
     }
   }
 
+  // Need to validate availability of the appointment as well.
+  // refactor isIn to validateStatus, await this... into validateProperties
+  // leave as general wrapper for other validation functions
   async validate(): Promise<Response | ResponseError> {
     try {
       await this.booking?.validate();
@@ -52,7 +55,7 @@ class Booking {
     }
   }
 
-  private async validateTime(): Promise<Response | ResponseError> {
+  async validateTime(): Promise<Response | ResponseError> {
     if (moment(this.startsAt).isAfter(moment().add("h", 24))) {
       return new Response(200, "OK");
     } else {

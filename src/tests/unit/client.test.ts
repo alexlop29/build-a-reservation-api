@@ -3,7 +3,7 @@ import { client } from "../../database";
 import { stub, SinonStub } from "sinon";
 import { ResponseError } from "../../handlers";
 
-describe("Shoudl describe a client", () => {
+describe("Should describe a client", () => {
   let sampleClient = {
     firstName: "Brittany",
     lastName: "Snow",
