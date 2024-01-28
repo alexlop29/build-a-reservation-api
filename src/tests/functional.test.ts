@@ -17,3 +17,5 @@ describe("Should demonstrate the expected functionality of the API", () => {
 
   test("Should not allow new reservations for the upcoming 24 hours"); // rephrase
 });
+
+// Working on client, then booking will knock out a lot of these

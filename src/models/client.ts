@@ -18,6 +18,10 @@ class Client {
     });
   }
 
+  /*
+  Add function get all bookings for a client
+  Future Improvement: Filter by Active Bookings, Pagination
+  */
   async validate(): Promise<Response | ResponseError> {
     try {
       await this.profile?.validate();
