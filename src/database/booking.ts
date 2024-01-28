@@ -23,6 +23,10 @@ const bookingSchema = new Schema({
     type: Date,
     required: true,
   },
+  duration: {
+    type: Number,
+    required: true,
+  },
   updatedAt: {
     type: Date,
     required: true,

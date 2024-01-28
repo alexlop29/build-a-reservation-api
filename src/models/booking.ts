@@ -18,6 +18,7 @@ class Booking {
       clientId: this.clientId,
       providerId: this.providerId,
       startsAt: this.startsAt,
+      duration: 15,
       updatedAt: this.updatedAt,
       status: this.status,
     });

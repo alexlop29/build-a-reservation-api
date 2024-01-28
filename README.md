@@ -17,6 +17,7 @@ docker-compose down
 - [dotenv](https://www.npmjs.com/package/dotenv)
 - [mongoose-unique-validator](https://www.npmjs.com/package/mongoose-unique-validator)
 - [Validator.js](https://github.com/validatorjs/validator.js)
+- [Moment.js](https://momentjs.com)
 
 ### 💻 Development Libraries
 
