@@ -1,15 +1,16 @@
 import { provider } from "../database/";
 import { ResponseError, Response } from "../handlers/";
 import { booking } from "../database/";
-import { getTimeSlots } from "../helpers/";
-import { Booking } from "../types/";
-import { Availability } from "../types/";
+import { Availability, Booking } from "../types/";
+import { getWeekDay } from "../helpers";
+const moment = require("moment");
 
 // The 15min time slots can be hanlded by the Booking Controller
 class Provider {
   profile;
   id: string = "";
-  availableSlots: string[] = [];
+  availableByDate = {};
+  bookings: Booking[] = [];
 
   constructor(
     private readonly firstName: string,
@@ -26,16 +27,38 @@ class Provider {
       availabilities: this.availabilities,
     });
   }
-
-  async availability(): Promise<Response | ResponseError> {
+  // can not test until the integration test
+  // forced to resolve desired dict
+  // may not have booking on date
+  // need to account for the user asking for a day in which the provider is not available
+  async getavailabilityByDate(at: Date): Promise<Response | ResponseError> {
     try {
-      let bookings = await booking.find({ providerId: this.id });
-      let timeSlots = await getTimeSlots();
-      bookings.forEach((booking: Booking) => {
-        let index = timeSlots.indexOf(String(booking.startsAt));
-        timeSlots.splice(index, 1);
+      this.getBookingsByDate(at);
+      let weekDay = getWeekDay(at);
+      let availabilityOnDayOfTheWeek = this.availabilities.find(
+        (availability) => availability.weekDay === weekDay,
+      );
+      let avail = `${moment(availabilityOnDayOfTheWeek?.startAt).format("HH:MM")}-${moment(availabilityOnDayOfTheWeek?.endAt).format("HH:MM")}`;
+      // may want to format bookings better!
+
+      this.availableByDate = {
+        day: moment(at).format("YYYY-MM-DD"),
+        availability: avail,
+        booked: this.bookings,
+      };
+      return new Response(200, "OK");
+    } catch (error) {
+      throw new ResponseError(500, "Internal Server Error");
+    }
+  }
+
+  async getBookingsByDate(at: Date): Promise<Response | ResponseError> {
+    try {
+      let bookings = await booking.find({
+        providerId: this.id,
+        startsAt: new RegExp(`^${at}`),
       });
-      this.availableSlots = timeSlots;
+      this.bookings = bookings;
       return new Response(200, "OK");
     } catch (error) {
       throw new ResponseError(500, "Internal Server Error");
