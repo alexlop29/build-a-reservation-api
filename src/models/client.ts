@@ -1,5 +1,5 @@
-import { client } from "../database/index.js";
-import { Response, ResponseError } from "../handlers/index.js";
+import { client } from "../database/";
+import { Response, ResponseError } from "../handlers/";
 
 class Client {
   profile;

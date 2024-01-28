@@ -1,6 +1,6 @@
 import { Schema } from "mongoose";
-import { booking } from "../database/index.js";
-import { Response, ResponseError } from "../handlers/index.js";
+import { booking } from "../database/";
+import { Response, ResponseError } from "../handlers/";
 import { isIn } from "validator";
 const moment = require("moment");
 

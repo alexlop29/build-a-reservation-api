@@ -48,7 +48,10 @@ docker-compose down
 
 # 🚧 To Do
 
-- Working on schemas, models
+Current:
+
+- Working on tests!
+
 - Work on controllers
 - Work on tests
 - Add indexes on the models

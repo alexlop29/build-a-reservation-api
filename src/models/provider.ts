@@ -1,8 +1,9 @@
-import { availability, provider } from "../database/index.js";
-import { ResponseError, Response } from "../handlers/index.js";
-import { booking } from "../database/index.js";
-import { getTimeSlots } from "../helpers/getTimeSlots.js";
-import { Booking } from "../types/booking.js";
+import { provider } from "../database/";
+import { ResponseError, Response } from "../handlers/";
+import { booking } from "../database/";
+import { getTimeSlots } from "../helpers/";
+import { Booking } from "../types/";
+import { Availability } from "../types/";
 
 // The 15min time slots can be hanlded by the Booking Controller
 class Provider {
@@ -15,7 +16,7 @@ class Provider {
     private readonly lastName: string,
     private readonly email: string,
     private readonly phone: string,
-    private readonly availabilities: (typeof availability)[],
+    private readonly availabilities: Availability[],
   ) {
     this.profile = new provider({
       firstName: this.firstName,
