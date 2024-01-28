@@ -48,9 +48,11 @@ docker-compose down
 
 # 🚧 To Do
 
-Current:
+Left Off:
 
-- Working on tests!
+- Working on unit tests for the provider class
+- Need to test availabilities property
+- Need to create integration tests!
 
 - Work on controllers
 - Work on tests
