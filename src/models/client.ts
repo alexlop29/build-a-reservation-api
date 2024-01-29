@@ -5,10 +5,10 @@ class Client {
   profile;
 
   constructor(
-    private readonly firstName: string | undefined,
-    private readonly lastName: string | undefined,
-    private readonly phone: string | undefined,
-    private readonly email: string | undefined,
+    private readonly firstName: string,
+    private readonly lastName: string,
+    private readonly email: string,
+    private readonly phone: string,
   ) {
     this.profile = new client({
       firstName: this.firstName,

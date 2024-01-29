@@ -101,7 +101,7 @@ describe("Should describe a booking", () => {
     let booking = new Booking(
       sampleBooking.clientId,
       sampleBooking.providerId,
-      moment(),
+      sampleBooking.startsAt,
       sampleBooking.updatedAt,
       sampleBooking.status,
     );
