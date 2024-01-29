@@ -46,11 +46,13 @@ docker-compose down
 
 - Use of `npm --force` to install [mongoose-unique-validator](https://www.npmjs.com/package/mongoose-unique-validator)
 
+Improvements:
+
+- Add necessary CRUD operations.
+
 # 🚧 To Do
 
 Left Off:
-
-- Need to create integration tests!
 
 - Work on controllers
 - Work on routes

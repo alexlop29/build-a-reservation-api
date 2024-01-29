@@ -47,7 +47,7 @@ class Provider {
   // may not have booking on date
   // need to account for the user asking for a day in which the provider is not available
   // need to create more granular tests and split
-  // function has too many jobs!
+  // function has too many jobs!!!!! not a fan!
   async getavailabilityByDate(at: Date): Promise<Response | ResponseError> {
     try {
       this.getBookingsByDate(at);
