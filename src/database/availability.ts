@@ -1,9 +1,7 @@
 import { Schema } from "mongoose";
 
 /*
-NOTE: (ALoprz) Can check if booking falls
-into the availability of the provider
-https://www.geeksforgeeks.org/moment-js-isbetween-function/
+Improve validation of startAt and endAt
 */
 const availability = new Schema({
   weekDay: {
@@ -11,11 +9,11 @@ const availability = new Schema({
     required: true,
   },
   startAt: {
-    type: Date,
+    type: String,
     required: true,
   },
   endAt: {
-    type: Date,
+    type: String,
     required: true,
   },
 });

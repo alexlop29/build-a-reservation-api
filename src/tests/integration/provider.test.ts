@@ -1,7 +1,7 @@
-import { sampleProvider } from "../util";
 import { Provider } from "../../models";
-import { initialize } from "../util";
 import { ResponseError } from "../../handlers";
+import { existingProvider, sampleProvider, initialize } from "../util";
+const moment = require("moment");
 
 /*
 Update the syntax in the unit tests
@@ -125,9 +125,24 @@ describe("Should describe a provider", () => {
     expect(response.message).toBe("OK");
     expect(provider.id).toBeTruthy();
   });
+
+  test("Should return 200 and store the provider's bookings", async () => {
+    let provider = new Provider(
+      existingProvider.firstName,
+      existingProvider.lastName,
+      existingProvider.email,
+      existingProvider.phone,
+      existingProvider.availabilties,
+    );
+    await provider.getId();
+    let response = await provider.getBookingsByDate(
+      moment().add(48, "hours").format("YYYY-MM-DD"),
+    );
+    expect(response.status).toBe(200);
+    expect(response.message).toBe("OK");
+    expect(provider.bookings.length).toBe(1);
+  });
 });
 
-/*
-Will need to seed the database with sample client, provider, bookings
-left off testing getBookingsByDate
-*/
+// not populating availabilites of existing providers
+// monogdb is crashing

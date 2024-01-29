@@ -1,5 +1,3 @@
-const moment = require("moment");
-
 /*
 Need to adjust moment usage across files
 Just want 
@@ -12,18 +10,18 @@ const sampleProvider = {
   availabilties: [
     {
       weekDay: "Sunday",
-      startAt: moment().hour(9).minute(0).format("HH:mm"),
-      endAt: moment().hour(17).minute(0).format("HH:mm"),
+      startAt: "09:00",
+      endAt: "17:00",
     },
     {
       weekDay: "Monday",
-      startAt: moment().hour(9).minute(0).format("HH:mm"),
-      endAt: moment().hour(17).minute(0).format("HH:mm"),
+      startAt: "09:00",
+      endAt: "17:00",
     },
     {
       weekDay: "Friday",
-      startAt: moment().hour(9).minute(0).format("HH:mm"),
-      endAt: moment().hour(17).minute(0).format("HH:mm"),
+      startAt: "09:00",
+      endAt: "17:00",
     },
   ],
 };
@@ -36,18 +34,18 @@ const existingProvider = {
   availabilties: [
     {
       weekDay: "Monday",
-      startAt: moment().hour(9).minute(0).format("HH:mm"),
-      endAt: moment().hour(17).minute(0).format("HH:mm"),
+      startAt: "09:00",
+      endAt: "17:00",
     },
     {
       weekDay: "Tuesday",
-      startAt: moment().hour(9).minute(0).format("HH:mm"),
-      endAt: moment().hour(17).minute(0).format("HH:mm"),
+      startAt: "09:00",
+      endAt: "17:00",
     },
     {
       weekDay: "Friday",
-      startAt: moment().hour(9).minute(0).format("HH:mm"),
-      endAt: moment().hour(17).minute(0).format("HH:mm"),
+      startAt: "09:00",
+      endAt: "17:00",
     },
   ],
 };

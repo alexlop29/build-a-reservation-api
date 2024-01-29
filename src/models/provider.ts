@@ -27,6 +27,21 @@ class Provider {
       availabilities: this.availabilities,
     });
   }
+
+  // need to create unit test for
+  // need to account for what if the id does yet exist
+  async getId(): Promise<Response | ResponseError> {
+    try {
+      let existingProvider = await provider.findOne({
+        email: this.email,
+      });
+      this.id = existingProvider._id;
+      return new Response(200, "OK");
+    } catch (error) {
+      throw new ResponseError(500, "Internal Server Error");
+    }
+  }
+
   // can not test until the integration test
   // forced to resolve desired dict
   // may not have booking on date
@@ -52,11 +67,18 @@ class Provider {
     }
   }
 
+  // need to use providerId, not email
+  // create function to retrieve providerId
   async getBookingsByDate(at: Date): Promise<Response | ResponseError> {
     try {
+      const startOfDay = moment(at).startOf("day").toISOString();
+      const endOfDay = moment(at).endOf("day").toISOString();
       let bookings = await booking.find({
         providerId: this.id,
-        startsAt: new RegExp(`^${at}`),
+        startsAt: {
+          $gte: startOfDay,
+          $lt: endOfDay,
+        },
       });
       this.bookings = bookings;
       return new Response(200, "OK");

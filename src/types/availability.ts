@@ -1,7 +1,7 @@
 type Availability = {
   weekDay: string;
-  startAt: Date;
-  endAt: Date;
+  startAt: string;
+  endAt: string;
 };
 
 export { Availability };
