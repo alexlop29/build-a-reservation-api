@@ -46,6 +46,8 @@ class Provider {
   // forced to resolve desired dict
   // may not have booking on date
   // need to account for the user asking for a day in which the provider is not available
+  // need to create more granular tests and split
+  // function has too many jobs!
   async getavailabilityByDate(at: Date): Promise<Response | ResponseError> {
     try {
       this.getBookingsByDate(at);
@@ -53,7 +55,8 @@ class Provider {
       let availabilityOnDayOfTheWeek = this.availabilities.find(
         (availability) => availability.weekDay === weekDay,
       );
-      let avail = `${moment(availabilityOnDayOfTheWeek?.startAt).format("HH:MM")}-${moment(availabilityOnDayOfTheWeek?.endAt).format("HH:MM")}`;
+      console.log(availabilityOnDayOfTheWeek);
+      let avail = `${availabilityOnDayOfTheWeek?.startAt}-${availabilityOnDayOfTheWeek?.endAt}`;
       // may want to format bookings better!
 
       this.availableByDate = {
@@ -69,6 +72,7 @@ class Provider {
 
   // need to use providerId, not email
   // create function to retrieve providerId
+  // there may be an error here; showing up in getAvailabilityByDate();
   async getBookingsByDate(at: Date): Promise<Response | ResponseError> {
     try {
       const startOfDay = moment(at).startOf("day").toISOString();

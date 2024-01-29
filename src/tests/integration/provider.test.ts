@@ -142,7 +142,47 @@ describe("Should describe a provider", () => {
     expect(response.message).toBe("OK");
     expect(provider.bookings.length).toBe(1);
   });
+
+  test("Should return 200 and store the provider's bookings on a date", async () => {
+    let provider = new Provider(
+      existingProvider.firstName,
+      existingProvider.lastName,
+      existingProvider.email,
+      existingProvider.phone,
+      existingProvider.availabilties,
+    );
+    await provider.getId();
+    let response = await provider.getBookingsByDate(
+      moment().add(48, "hours").format("YYYY-MM-DD"),
+    );
+    expect(response.status).toBe(200);
+    expect(response.message).toBe("OK");
+    expect(provider.bookings.length).toBe(1);
+  });
+
+  test("Should return 200 and store the provider's availability on a date", async () => {
+    let provider = new Provider(
+      existingProvider.firstName,
+      existingProvider.lastName,
+      existingProvider.email,
+      existingProvider.phone,
+      existingProvider.availabilties,
+    );
+    await provider.getId();
+    let response = await provider.getavailabilityByDate(
+      moment().add(48, "hours").format("YYYY-MM-DD"),
+    );
+    expect(response.status).toBe(200);
+    expect(response.message).toBe("OK");
+    expect(provider.availableByDate).not.toBe({});
+    console.log(provider.availableByDate);
+    // lack of availabilites on a date is due to
+  });
 });
 
 // not populating availabilites of existing providers
 // monogdb is crashing
+
+// need to add function for the booking class
+// to validateProviderAvailability
+// to validate startsAt is not already in use!

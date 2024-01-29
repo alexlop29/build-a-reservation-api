@@ -37,6 +37,7 @@ class Booking {
   // Need to validate availability of the appointment as well.
   // refactor isIn to validateStatus, await this... into validateProperties
   // leave as general wrapper for other validation functions
+  // do not leave as general wrapper; breaks SOLID
   async validate(): Promise<Response | ResponseError> {
     try {
       await this.booking?.validate();

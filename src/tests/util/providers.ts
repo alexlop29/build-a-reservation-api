@@ -43,7 +43,27 @@ const existingProvider = {
       endAt: "17:00",
     },
     {
+      weekDay: "Wednesday",
+      startAt: "09:00",
+      endAt: "17:00",
+    },
+    {
+      weekDay: "Thursday",
+      startAt: "09:00",
+      endAt: "17:00",
+    },
+    {
       weekDay: "Friday",
+      startAt: "09:00",
+      endAt: "17:00",
+    },
+    {
+      weekDay: "Saturday",
+      startAt: "09:00",
+      endAt: "17:00",
+    },
+    {
+      weekDay: "Sunday",
       startAt: "09:00",
       endAt: "17:00",
     },
