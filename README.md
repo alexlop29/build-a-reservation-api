@@ -50,13 +50,22 @@ docker-compose down
 
 Left Off:
 
-- Working on unit tests for the provider class
-- Need to test availabilities property
 - Need to create integration tests!
 
 - Work on controllers
+- Work on routes
+- Work on routing tests
+
 - Work on tests
 - Add indexes on the models
 - Include Mongoose ODM best practices
 - Include Express.js best practices
 - Need to account for timezone differences
+- Set up CI/CD in github
+- Rename
+- Clean up the readme
+- Clean up the code!
+
+```
+ jest --config=src/tests/jest.config.json  --testPathPattern=src/tests/integration/provider.test.ts --forceExit
+```

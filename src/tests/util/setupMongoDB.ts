@@ -1,3 +1,7 @@
-const initalize = async () => {};
+import { mongoose } from "../../config/mongoose";
 
-export { initalize };
+const initialize = async () => {
+  await mongoose.connection.dropCollection("providers");
+};
+
+export { initialize };

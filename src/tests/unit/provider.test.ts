@@ -3,35 +3,18 @@ import { Provider } from "../../models/";
 const moment = require("moment");
 import { stub, SinonStub } from "sinon";
 import { ResponseError } from "../../handlers";
+import { sampleProvider } from "../util";
 
 /*
 Need to normalize the weekday
 */
 
+/*
+Need to add a validation test to check the uniqueness
+of the email!
+*/
+
 describe("Should describe a provider", () => {
-  let sampleProvider = {
-    firstName: "John",
-    lastName: "Tucker",
-    email: "jtucker@gmail.com",
-    phone: "9127772389",
-    availabilties: [
-      {
-        weekDay: "Sunday",
-        startAt: moment().day("Sunday").hour(9).minute(0).second(0),
-        endAt: moment().day("Sunday").hour(17).minute(0).second(0),
-      },
-      {
-        weekDay: "Monday",
-        startAt: moment().day("Monday").hour(9).minute(0).second(0),
-        endAt: moment().day("Monday").hour(17).minute(0).second(0),
-      },
-      {
-        weekDay: "Friday",
-        startAt: moment().day("Monday").hour(9).minute(0).second(0),
-        endAt: moment().day("Monday").hour(17).minute(0).second(0),
-      },
-    ],
-  };
   let mockSave: SinonStub;
   let mockValidate: SinonStub;
   let mockFind: SinonStub;
@@ -249,12 +232,3 @@ describe("Should describe a provider", () => {
     console.log(provider.availableByDate);
   });
 });
-
-/*
-Could instead output a JSON blob
-availabilityByDate = {
-    Date: at,
-    Availability: availabilityOnDayOfTheWeek,
-    Booked: bookings
-}
-*/
