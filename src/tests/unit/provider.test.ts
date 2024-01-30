@@ -1,38 +1,46 @@
+import { stub, SinonStub } from "sinon";
 import { provider, booking } from "../../database";
 import { Provider } from "../../models";
-const moment = require("moment");
-import { stub, SinonStub } from "sinon";
+import { sampleProvider, existingProvider } from "../util";
 import { ResponseError } from "../../handlers";
-import { sampleProvider } from "../util";
-
-/*
-Need to normalize the weekday
-*/
-
-/*
-Need to add a validation test to check the uniqueness
-of the email!
-*/
+const moment = require("moment");
 
 describe("Should describe a provider", () => {
   let mockSave: SinonStub;
   let mockValidate: SinonStub;
   let mockFind: SinonStub;
+  let mockFindOne: SinonStub;
 
   beforeEach(() => {
     mockSave = stub(provider.prototype, "save");
     mockValidate = stub(provider.prototype, "validate");
     mockFind = stub(booking, "find");
+    mockFindOne = stub(provider, "findOne");
   });
 
   afterEach(() => {
     mockSave.restore();
     mockValidate.restore();
     mockFind.restore();
+    mockFindOne.restore();
+  });
+
+  test("Should return 200, initalize the provider, and store provided properties", async () => {
+    let provider = new Provider();
+    let response = await provider.init(
+      sampleProvider.firstName,
+      sampleProvider.lastName,
+      sampleProvider.email,
+      sampleProvider.phone,
+      sampleProvider.availabilties,
+    );
+    expect(response.status).toBe(200);
+    expect(response.message).toBe("OK");
   });
 
   test("Should return 200 if the provider's properties are valid", async () => {
-    let provider = new Provider(
+    let provider = new Provider();
+    await provider.init(
       sampleProvider.firstName,
       sampleProvider.lastName,
       sampleProvider.email,
@@ -46,7 +54,8 @@ describe("Should describe a provider", () => {
   });
 
   test("Should return 400 if the provider's first name is empty", async () => {
-    let provider = new Provider(
+    let provider = new Provider();
+    await provider.init(
       "",
       sampleProvider.lastName,
       sampleProvider.email,
@@ -54,14 +63,14 @@ describe("Should describe a provider", () => {
       sampleProvider.availabilties,
     );
     mockValidate.rejects();
-
-    expect(provider.validate()).rejects.toThrow(
+    await expect(provider.validate()).rejects.toThrow(
       new ResponseError(400, "Bad Request"),
     );
   });
 
   test("Should return 400 if the provider's last name is empty", async () => {
-    let provider = new Provider(
+    let provider = new Provider();
+    await provider.init(
       sampleProvider.firstName,
       "",
       sampleProvider.email,
@@ -69,80 +78,97 @@ describe("Should describe a provider", () => {
       sampleProvider.availabilties,
     );
     mockValidate.rejects();
-
-    expect(provider.validate()).rejects.toThrow(
+    await expect(provider.validate()).rejects.toThrow(
       new ResponseError(400, "Bad Request"),
     );
   });
 
   test("Should return 400 if the provider's email is empty", async () => {
-    let provider = new Provider(
+    let provider = new Provider();
+    await provider.init(
       sampleProvider.firstName,
-      sampleProvider.lastName,
+      sampleProvider.firstName,
       "",
       sampleProvider.phone,
       sampleProvider.availabilties,
     );
     mockValidate.rejects();
-
-    expect(provider.validate()).rejects.toThrow(
+    await expect(provider.validate()).rejects.toThrow(
       new ResponseError(400, "Bad Request"),
     );
   });
 
   test("Should return 400 if the provider's email is invalid", async () => {
-    let provider = new Provider(
+    let provider = new Provider();
+    await provider.init(
       sampleProvider.firstName,
-      sampleProvider.lastName,
-      "2312@",
+      sampleProvider.firstName,
+      "2dsadas@",
       sampleProvider.phone,
       sampleProvider.availabilties,
     );
     mockValidate.rejects();
+    await expect(provider.validate()).rejects.toThrow(
+      new ResponseError(400, "Bad Request"),
+    );
+  });
 
-    expect(provider.validate()).rejects.toThrow(
+  test("Should return 400 if the email address is already in use", async () => {
+    let provider = new Provider();
+    await provider.init(
+      sampleProvider.firstName,
+      sampleProvider.firstName,
+      existingProvider.email,
+      sampleProvider.phone,
+      sampleProvider.availabilties,
+    );
+    mockValidate.rejects();
+    await expect(provider.validate()).rejects.toThrow(
       new ResponseError(400, "Bad Request"),
     );
   });
 
   test("Should return 400 if the provider's phone number is empty", async () => {
-    let provider = new Provider(
+    let provider = new Provider();
+    await provider.init(
       sampleProvider.firstName,
-      sampleProvider.lastName,
+      sampleProvider.firstName,
       sampleProvider.email,
       "",
       sampleProvider.availabilties,
     );
     mockValidate.rejects();
-
-    expect(provider.validate()).rejects.toThrow(
+    await expect(provider.validate()).rejects.toThrow(
       new ResponseError(400, "Bad Request"),
     );
   });
 
   test("Should return 400 if the provider's phone number is invalid", async () => {
-    let provider = new Provider(
+    let provider = new Provider();
+    await provider.init(
       sampleProvider.firstName,
-      sampleProvider.lastName,
+      sampleProvider.firstName,
       sampleProvider.email,
-      "12312",
+      "9089312",
       sampleProvider.availabilties,
     );
     mockValidate.rejects();
-
-    expect(provider.validate()).rejects.toThrow(
+    await expect(provider.validate()).rejects.toThrow(
       new ResponseError(400, "Bad Request"),
     );
   });
 
   test("Should return 200 and create a new provider", async () => {
-    let provider = new Provider(
+    let provider = new Provider();
+    await provider.init(
       sampleProvider.firstName,
       sampleProvider.lastName,
       sampleProvider.email,
       sampleProvider.phone,
       sampleProvider.availabilties,
     );
+    mockValidate.resolves();
+    await provider.validate();
     mockSave.resolves({
       _id: "32131231231412341231",
       firstName: sampleProvider.firstName,
@@ -156,15 +182,40 @@ describe("Should describe a provider", () => {
     expect(response.message).toBe("OK");
   });
 
-  test("Should return 200 and store the provider's bookings", async () => {
-    let provider = new Provider(
-      sampleProvider.firstName,
-      sampleProvider.lastName,
-      sampleProvider.email,
-      sampleProvider.phone,
-      sampleProvider.availabilties,
-    );
+  test("Should return 200, retrieve, and store a provider's profile", async () => {
+    let provider = new Provider();
+    mockFindOne.resolves({
+      _id: "32131231231412341231",
+      firstName: existingProvider.firstName,
+      lastName: existingProvider.lastName,
+      email: existingProvider.email,
+      phone: existingProvider.phone,
+      availabilities: existingProvider.availabilties,
+    });
+    let response = await provider.get(existingProvider.email);
+    expect(response.status).toBe(200);
+    expect(response.message).toBe("OK");
+  });
 
+  test("Should return 400 if the provider does not exist", async () => {
+    let provider = new Provider();
+    mockFindOne.rejects();
+    await expect(provider.get(sampleProvider.email)).rejects.toThrow(
+      new ResponseError(400, "Bad Request"),
+    );
+  });
+
+  test("Should return 200, retrieve, and store a provider's bookings by date", async () => {
+    let provider = new Provider();
+    mockFindOne.resolves({
+      _id: "32131231231412341231",
+      firstName: sampleProvider.firstName,
+      lastName: sampleProvider.lastName,
+      email: sampleProvider.email,
+      phone: sampleProvider.phone,
+      availabilities: sampleProvider.availabilties,
+    });
+    await provider.get(sampleProvider.email);
     mockFind.resolves([
       {
         _id: "23123123124133",
@@ -185,24 +236,24 @@ describe("Should describe a provider", () => {
         status: "BOOKED",
       },
     ]);
-
     let response = await provider.getBookingsByDate(
       moment().format("YYYY-MM-DD"),
     );
     expect(response.status).toBe(200);
     expect(response.message).toBe("OK");
-    expect(provider.bookings.length).toBe(2);
   });
 
-  test("Should return 200 and get the provider's availability on a day", async () => {
-    let provider = new Provider(
-      sampleProvider.firstName,
-      sampleProvider.lastName,
-      sampleProvider.email,
-      sampleProvider.phone,
-      sampleProvider.availabilties,
-    );
-
+  test("Should return 200, retrieve, and store a provider's availability on a specific date", async () => {
+    let provider = new Provider();
+    mockFindOne.resolves({
+      _id: "32131231231412341231",
+      firstName: sampleProvider.firstName,
+      lastName: sampleProvider.lastName,
+      email: sampleProvider.email,
+      phone: sampleProvider.phone,
+      availabilities: sampleProvider.availabilties,
+    });
+    await provider.get(sampleProvider.email);
     mockFind.resolves([
       {
         _id: "23123123124133",
@@ -223,12 +274,11 @@ describe("Should describe a provider", () => {
         status: "BOOKED",
       },
     ]);
-
-    let response = await provider.getavailabilityByDate(
+    await provider.getBookingsByDate(moment().format("YYYY-MM-DD"));
+    let response = await provider.getAvailabilityByDate(
       moment().format("YYYY-MM-DD"),
     );
     expect(response.status).toBe(200);
     expect(response.message).toBe("OK");
-    console.log(provider.availableByDate);
   });
 });

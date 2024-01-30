@@ -16,7 +16,8 @@ try {
     minPoolSize: 5,
   });
 } catch (error) {
-  captureException(new ResponseError(500, "Internal Server Error"));
+  captureException(error);
+  throw new ResponseError(500, "Internal Server Error");
 }
 
 export { mongoose };

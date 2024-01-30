@@ -1,31 +1,17 @@
 import { ResponseError, Response } from "../handlers";
 import { Provider } from "../models";
 import { Availability } from "../types";
+import { captureException } from "@sentry/node";
 
 class ProviderController {
   constructor() {}
 
-  // not a fan - should not need all of this information to retrieve
-  // simple availability!
-  async getProviderAvailabilityByDate(
-    firstName: string,
-    lastName: string,
-    email: string,
-    phone: string,
-    availabilities: Availability[],
-    date: Date,
-  ) {
+  async getProviderAvailabilityByDate(email: string, date: Date) {
     try {
-      let provider = new Provider(
-        firstName,
-        lastName,
-        email,
-        phone,
-        availabilities,
-      );
-      await provider.getId();
-      await provider.getavailabilityByDate(date);
-      return provider.availableByDate;
+      let provider = new Provider();
+      await provider.get(email);
+      await provider.getBookingsByDate(date);
+      return provider.getAvailabilityByDate(date);
     } catch (error) {
       if (error instanceof ResponseError) {
         throw error;
@@ -42,22 +28,14 @@ class ProviderController {
     phone: string,
     availabilities: Availability[],
   ): Promise<Response | ResponseError> {
-    console.log(`alex in providercontroller: createProvider`);
     try {
-      let provider = new Provider(
-        firstName,
-        lastName,
-        email,
-        phone,
-        availabilities,
-      );
-      console.log(`alex in providercontroller: new Provider`);
+      let provider = new Provider();
+      await provider.init(firstName, lastName, email, phone, availabilities);
       await provider.validate();
-      console.log(`alex in providercontroller: validate`);
       await provider.save();
-      console.log(`alex in providercontroller: save`);
       return new Response(200, "OK");
     } catch (error) {
+      captureException(error);
       if (error instanceof ResponseError) {
         throw error;
       } else {

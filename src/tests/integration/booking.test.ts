@@ -4,8 +4,8 @@ import {
   initialize,
   validClientId,
   validProviderId,
-} from "../util/index.js";
-import { ResponseError } from "../../handlers/index.js";
+} from "../util/";
+import { ResponseError } from "../../handlers/";
 const moment = require("moment");
 
 describe("Should describe a booking", () => {

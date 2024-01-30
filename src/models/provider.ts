@@ -1,114 +1,157 @@
-import { provider } from "../database";
+import { provider, booking } from "../database";
 import { ResponseError, Response } from "../handlers";
-import { booking } from "../database";
 import { Availability, Booking } from "../types";
 import { getWeekDay } from "../helpers";
 const moment = require("moment");
+import { captureException } from "@sentry/node";
 
-// The 15min time slots can be hanlded by the Booking Controller
+/**
+ * Faciliates interactions with an individual provider
+ */
 class Provider {
-  profile;
-  id: string = "";
-  availableByDate = {};
-  bookings: Booking[] = [];
+  profile: any;
+  availablityByDate = {};
+  bookingsByDate: Booking[] = [];
 
-  constructor(
-    private readonly firstName: string,
-    private readonly lastName: string,
-    private readonly email: string,
-    private readonly phone: string,
-    private readonly availabilities: Availability[],
-  ) {
-    this.profile = new provider({
-      firstName: this.firstName,
-      lastName: this.lastName,
-      email: this.email,
-      phone: this.phone,
-      availabilities: this.availabilities,
-    });
-  }
+  constructor() {}
 
-  // need to create unit test for
-  // need to account for what if the id does yet exist
-  async getId(): Promise<Response | ResponseError> {
+  /**
+   * Stores the provider's information
+   *
+   * @param firstName the provider's first name
+   * @param lastName the provider's last name
+   * @param email the provider's email
+   * @param phone the provider's phone number
+   * @param availabilties the provider's availabiltiy on a weekly basis
+   * @returns Response(200, "OK") || ResponseError(500, "Internal Server Error")
+   */
+  async init(
+    firstName: string,
+    lastName: string,
+    email: string,
+    phone: string,
+    availabilities: Availability[],
+  ): Promise<Response | ResponseError> {
     try {
-      let existingProvider = await provider.findOne({
-        email: this.email,
+      this.profile = new provider({
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+        availabilities: availabilities,
       });
-      this.id = existingProvider._id;
       return new Response(200, "OK");
     } catch (error) {
+      captureException(error);
       throw new ResponseError(500, "Internal Server Error");
     }
   }
 
-  // can not test until the integration test
-  // forced to resolve desired dict
-  // may not have booking on date
-  // need to account for the user asking for a day in which the provider is not available
-  // need to create more granular tests and split
-  // function has too many jobs!!!!! not a fan!
-  async getavailabilityByDate(at: Date): Promise<Response | ResponseError> {
-    try {
-      this.getBookingsByDate(at);
-      let weekDay = getWeekDay(at);
-      let availabilityOnDayOfTheWeek = this.availabilities.find(
-        (availability) => availability.weekDay === weekDay,
-      );
-      console.log(availabilityOnDayOfTheWeek);
-      let avail = `${availabilityOnDayOfTheWeek?.startAt}-${availabilityOnDayOfTheWeek?.endAt}`;
-      // may want to format bookings better!
-
-      this.availableByDate = {
-        day: moment(at).format("YYYY-MM-DD"),
-        availability: avail,
-        booked: this.bookings,
-      };
-      return new Response(200, "OK");
-    } catch (error) {
-      throw new ResponseError(500, "Internal Server Error");
-    }
-  }
-
-  // need to use providerId, not email
-  // create function to retrieve providerId
-  // there may be an error here; showing up in getAvailabilityByDate();
-  async getBookingsByDate(at: Date): Promise<Response | ResponseError> {
-    try {
-      const startOfDay = moment(at).startOf("day").toISOString();
-      const endOfDay = moment(at).endOf("day").toISOString();
-      let bookings = await booking.find({
-        providerId: this.id,
-        startsAt: {
-          $gte: startOfDay,
-          $lt: endOfDay,
-        },
-      });
-      this.bookings = bookings;
-      return new Response(200, "OK");
-    } catch (error) {
-      throw new ResponseError(500, "Internal Server Error");
-    }
-  }
-
+  /**
+   * Validates the provider's information
+   * Should be called after init()
+   *
+   * @returns Response(200, "OK") || ResponseError(400, "Bad Request")
+   */
   async validate(): Promise<Response | ResponseError> {
     try {
       await this.profile?.validate();
       return new Response(200, "OK");
     } catch (error: any) {
+      captureException(error);
       throw new ResponseError(400, "Bad Request");
     }
   }
 
+  /**
+   * Saves the provider's information
+   * Should be called after init(), validate()
+   *
+   * @returns Response(200, "OK") || ResponseError(400, "Bad Request")
+   */
   async save(): Promise<Response | ResponseError> {
     try {
-      let provider = await this.profile?.save();
-      this.id = provider._id;
+      await this.profile?.save();
       return new Response(200, "OK");
     } catch (error: any) {
+      captureException(error);
+      throw new ResponseError(500, "Internal Server Error");
+    }
+  }
+
+  /**
+   * Retrieves and stores the provider's id
+   * @param email the provider's email
+   *
+   * @returns Response(200, "OK") || ResponseError(400, "Bad Request")
+   */
+  async get(email: string): Promise<Response | ResponseError> {
+    try {
+      let response = await provider
+        .findOne({
+          email: email,
+        })
+        .orFail();
+      this.profile = response;
+      return new Response(200, "OK");
+    } catch (error) {
+      captureException(error);
+      throw new ResponseError(400, "Bad Request");
+    }
+  }
+
+  /**
+   * Retrieves and stores the provider's bookings on a specific date
+   * Should be called after get()
+   * @param date the provider's email
+   *
+   * @returns Response(200, "OK") || ResponseError(500, "Internal Server Error")
+   */
+  async getBookingsByDate(date: Date): Promise<Response | ResponseError> {
+    try {
+      const startOfDay = moment(date).startOf("day").toISOString();
+      const endOfDay = moment(date).endOf("day").toISOString();
+      let bookings = await booking.find({
+        providerId: this.profile._id,
+        startsAt: {
+          $gte: startOfDay,
+          $lt: endOfDay,
+        },
+      });
+      this.bookingsByDate = bookings;
+      return new Response(200, "OK");
+    } catch (error) {
+      captureException(error);
+      throw new ResponseError(500, "Internal Server Error");
+    }
+  }
+
+  /**
+   * Retrieves and stores the provider's availability on a specific date
+   * Should be called after get(), getBookingsByDate()
+   * @param date the provider's email
+   *
+   * @returns Response(200, "OK") || ResponseError(500, "Internal Server Error")
+   */
+  async getAvailabilityByDate(date: Date): Promise<Response | ResponseError> {
+    try {
+      let weekDay = getWeekDay(date);
+      let availabilityOnDayOfTheWeek = this.profile.availabilities.find(
+        (availability: Availability) => availability.weekDay === weekDay,
+      );
+      this.availablityByDate = {
+        day: moment(date).format("YYYY-MM-DD"),
+        availability: {
+          startsAt: availabilityOnDayOfTheWeek.startAt,
+          endsAt: availabilityOnDayOfTheWeek.endsAt,
+        },
+        booked: this.bookingsByDate,
+      };
+      return new Response(200, "OK");
+    } catch (error) {
+      captureException(error);
       throw new ResponseError(500, "Internal Server Error");
     }
   }
 }
-
 export { Provider };

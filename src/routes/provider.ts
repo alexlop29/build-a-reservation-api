@@ -10,11 +10,7 @@ const providerController = new ProviderController();
 providerRoute.get("/availability/search", async (req, res) => {
   try {
     let response = await providerController.getProviderAvailabilityByDate(
-      req.body.firstName,
-      req.body.lastName,
       req.body.email,
-      req.body.phone,
-      req.body.availabilities,
       req.body.date,
     );
     return res.status(200).json(response);
@@ -29,7 +25,6 @@ providerRoute.get("/availability/search", async (req, res) => {
 
 providerRoute.post("/", async (req, res) => {
   try {
-    console.log(`alex starting provider route`);
     let provider = await providerController.createProvider(
       req.body.firstName,
       req.body.lastName,
@@ -37,7 +32,7 @@ providerRoute.post("/", async (req, res) => {
       req.body.phone,
       req.body.availabilities,
     );
-    res.status(200).json({ provider });
+    res.status(200).json(provider);
   } catch (error) {
     if (error instanceof ResponseError) {
       res.status(error.status).json({ error });

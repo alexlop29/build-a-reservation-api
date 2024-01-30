@@ -44,6 +44,28 @@ docker-compose down
 - [@types/validator](https://www.npmjs.com/package/@types/validator)
 - npm i --save-dev @types/redis-info
 
+## Running Tests
+
+Run all unit tests
+
+```
+jest --config=src/tests/jest.config.json  --testPathPattern=src/tests/unit/ --forceExit
+```
+
+Run an individual unit test
+
+```
+jest --config=src/tests/jest.config.json  --testPathPattern=src/tests/unit/provider.test.ts --forceExit
+```
+
+Run an indivudal integration test
+
+```
+jest --config=src/tests/jest.config.json  --testPathPattern=src/tests/integration/provider.test.ts --forceExit
+```
+
+## Include a link to the Postman collection!
+
 # Disclaimers
 
 - Use of `npm --force` to install [mongoose-unique-validator](https://www.npmjs.com/package/mongoose-unique-validator)

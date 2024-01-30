@@ -3,6 +3,9 @@ import { Response, ResponseError } from "../handlers";
 import { isIn } from "validator";
 const moment = require("moment");
 
+// // need to add function for the booking class
+// // to validateProviderAvailability
+// // to validate startsAt is not already in use!
 // Need an easy way to retrieve the booking
 class Booking {
   booking;
