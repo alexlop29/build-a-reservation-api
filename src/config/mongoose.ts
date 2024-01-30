@@ -5,8 +5,10 @@ import { captureException } from "@sentry/node";
 
 /*
 NOTE: (alopez) To improve application readiness and health checks,
-leverage Event Emitters to send a signal
-to the application once the database is ready to accept connections.
+leverage Event Emitters to send a signal once the database
+is ready to accept connections.
+If the database fails to reach a ready state,
+prevent the application for accepting incoming connections.
 */
 try {
   mongoose.connect(MONGO_DB_URI, {

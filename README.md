@@ -51,23 +51,25 @@ docker-compose down
 Improvements:
 
 - Add necessary CRUD operations.
+- Need to account for timezone differences
 
 # 🚧 To Do
 
 Left Off:
 
-- Work on routing tests in postman
 - bug: get provider availability is not correctly storing the bookings
-- Work on bull mq
 - Work on tests
 - Add indexes on the models
 - Include Mongoose ODM best practices
 - Include Express.js best practices
-- Need to account for timezone differences
-- Set up CI/CD in github
 - Rename
 - Clean up the readme
 - Clean up the code!
+
+Improvement:
+
+- Implement health checks to gracefully start and stop the application. (e.g. src/config/mongoose)
+- Improve input validation on the mongoose schemas. (E.g. src/database/availability);
 
 ```
  jest --config=src/tests/jest.config.json  --testPathPattern=src/tests/integration/provider.test.ts --forceExit
@@ -80,3 +82,5 @@ Left Off:
 
  jest --config=src/tests/jest.config.json  --testPathPattern=src/tests/routes/provider.test.ts --forceExit
 ```
+
+https://betterstack.com/community/guides/scaling-nodejs/bullmq-scheduled-tasks/

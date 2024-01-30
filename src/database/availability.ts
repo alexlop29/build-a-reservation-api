@@ -1,7 +1,8 @@
 import { Schema } from "mongoose";
 
 /*
-Improve validation of startAt and endAt
+NOTE: (alopez) Use `validator` to improve input
+validation of the following schema.
 */
 const availability = new Schema({
   weekDay: {
