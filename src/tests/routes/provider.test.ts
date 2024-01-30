@@ -1,9 +1,32 @@
-import { server } from "../../index.js";
+import { app } from "../../index";
 const request = require("supertest");
+import { Server } from "http";
+
+let server: Server;
+
+const startServer = async (): Promise<Server> => {
+  return new Promise((resolve) => {
+    server = app.listen(3001, () => resolve(server));
+  });
+};
 
 describe("Should describe the provider api route", () => {
+  beforeAll(async () => {
+    server = await startServer();
+  });
+
+  afterAll((done) => {
+    server.close((err) => {
+      if (err) {
+        process.exit(1);
+      } else {
+        done();
+      }
+    });
+  });
+
   test("Should create a new provider", (done) => {
-    request(server)
+    request(app)
       .get("/booking")
       .send({
         firstName: "Brent",

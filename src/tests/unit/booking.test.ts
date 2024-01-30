@@ -1,9 +1,9 @@
-import { Booking } from "../../models/index.js";
-import { booking } from "../../database/index.js";
+import { Booking } from "../../models";
+import { booking } from "../../database";
 import { stub, SinonStub } from "sinon";
-import { ResponseError } from "../../handlers/index.js";
+import { ResponseError } from "../../handlers";
 const moment = require("moment");
-import { sampleBooking } from "../util/index.js";
+import { sampleBooking } from "../util";
 
 describe("Should describe a booking", () => {
   let mockValidate: SinonStub;

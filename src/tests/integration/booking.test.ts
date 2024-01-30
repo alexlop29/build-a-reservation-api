@@ -1,4 +1,4 @@
-import { Booking } from "../../models/index.js";
+import { Booking } from "../../models";
 import {
   sampleBooking,
   initialize,

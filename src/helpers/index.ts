@@ -1,1 +1,1 @@
-export { getWeekDay } from "./getWeekDay.js";
+export { getWeekDay } from "./getWeekDay";

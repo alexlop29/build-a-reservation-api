@@ -1,9 +1,9 @@
-import { provider, booking } from "../../database/index.js";
-import { Provider } from "../../models/index.js";
+import { provider, booking } from "../../database";
+import { Provider } from "../../models";
 const moment = require("moment");
 import { stub, SinonStub } from "sinon";
-import { ResponseError } from "../../handlers/index.js";
-import { sampleProvider } from "../util/index.js";
+import { ResponseError } from "../../handlers";
+import { sampleProvider } from "../util";
 
 /*
 Need to normalize the weekday

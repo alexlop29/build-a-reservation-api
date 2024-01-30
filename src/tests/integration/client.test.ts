@@ -1,6 +1,6 @@
-import { existingClient, initialize, sampleClient } from "../util/index.js";
-import { Client } from "../../models/index.js";
-import { ResponseError } from "../../handlers/index.js";
+import { existingClient, initialize, sampleClient } from "../util";
+import { Client } from "../../models";
+import { ResponseError } from "../../handlers";
 
 describe("Should describe a client", () => {
   beforeAll(async () => {

@@ -1,6 +1,6 @@
-import { ResponseError, Response } from "../handlers/index.js";
-import { Provider } from "../models/index.js";
-import { Availability } from "../types/index.js";
+import { ResponseError, Response } from "../handlers";
+import { Provider } from "../models";
+import { Availability } from "../types";
 
 class ProviderController {
   constructor() {}

@@ -1,5 +1,5 @@
-import { ResponseError, Response } from "../handlers/index.js";
-import { Booking } from "../models/index.js";
+import { ResponseError, Response } from "../handlers";
+import { Booking } from "../models";
 
 class BookingController {
   constructor() {}

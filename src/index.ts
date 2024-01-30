@@ -1,9 +1,9 @@
 import * as Sentry from "@sentry/node";
 import { ProfilingIntegration } from "@sentry/profiling-node";
 import express from "express";
-import { SENTRY_DSN } from "./config/environment.js";
+import { SENTRY_DSN } from "./config/environment";
 // import { bookingRoute, providerRoute, clientRoute } from "./routes/";
-import { providerRoute } from "./routes/provider.js";
+import { providerRoute } from "./routes/provider";
 import { Server } from "http";
 
 const app = express();
@@ -69,4 +69,4 @@ process.on("SIGTERM", () => {
   });
 });
 
-export { server };
+export { app, server };

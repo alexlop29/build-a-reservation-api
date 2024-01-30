@@ -1,2 +1,2 @@
-export { Booking } from "./booking.js";
-export { Availability } from "./availability.js";
+export { Booking } from "./booking";
+export { Availability } from "./availability";

@@ -1,8 +1,8 @@
-import { Client } from "../../models/index.js";
-import { client } from "../../database/index.js";
+import { Client } from "../../models";
+import { client } from "../../database";
 import { stub, SinonStub } from "sinon";
-import { ResponseError } from "../../handlers/index.js";
-import { sampleClient } from "../util/index.js";
+import { ResponseError } from "../../handlers";
+import { sampleClient } from "../util";
 
 describe("Should describe a client", () => {
   let mockSave: SinonStub;

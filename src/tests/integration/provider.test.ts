@@ -1,6 +1,6 @@
-import { Provider } from "../../models/index.js";
-import { ResponseError } from "../../handlers/index.js";
-import { existingProvider, sampleProvider, initialize } from "../util/index.js";
+import { Provider } from "../../models";
+import { ResponseError } from "../../handlers";
+import { existingProvider, sampleProvider, initialize } from "../util";
 const moment = require("moment");
 
 /*

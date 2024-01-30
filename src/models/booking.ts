@@ -1,7 +1,6 @@
-import { booking } from "../database/index.js";
-import { Response, ResponseError } from "../handlers/index.js";
-import pkg from 'validator';
-const { isIn } = pkg;
+import { booking } from "../database";
+import { Response, ResponseError } from "../handlers";
+import { isIn } from "validator";
 const moment = require("moment");
 
 // Need an easy way to retrieve the booking

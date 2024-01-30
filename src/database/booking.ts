@@ -1,5 +1,5 @@
 import { Schema } from "mongoose";
-import { mongoose } from "../config/mongoose.js";
+import { mongoose } from "../config/mongoose";
 
 /*
 NOTE: (ALopez) Reminder to:

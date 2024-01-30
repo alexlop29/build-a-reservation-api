@@ -1,6 +1,6 @@
 import { Queue } from "bullmq";
-import { REDIS_HOST, REDIS_PORT } from "../config/environment.js";
-import { booking } from "../database/index.js";
+import { REDIS_HOST, REDIS_PORT } from "../config/environment";
+import { booking } from "../database/index";
 
 const moment = require("moment");
 
@@ -28,4 +28,6 @@ export const freeUnconfirmedAppointments = () => {
   );
 };
 
-await addJob({ name: "freeUnconfirmedAppointments" });
+export { addJob };
+
+// await addJob({ name: "freeUnconfirmedAppointments" });

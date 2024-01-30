@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
-    "target": "ES2022",
-    "module": "ES2022",
+    "target": "es5",
+    "module": "commonjs",
     "moduleResolution": "node",
-    "lib": ["ES2022"],
+    "lib": ["ES2016"],
     "esModuleInterop": true,
     "rootDir": "src",
     "outDir": "lib",
@@ -24,13 +24,6 @@
     "downlevelIteration": true,
     "declaration": true,
     "pretty": true,
-    "sourceMap": true,
-    "inlineSources": true,
-
-    // Set `sourceRoot` to  "/" to strip the build path prefix
-    // from generated source code references.
-    // This improves issue grouping in Sentry.
-    "sourceRoot": "/",
   },
   "include": ["typings/**/*", "src/**/*"],
 }
