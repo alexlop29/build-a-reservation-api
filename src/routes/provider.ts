@@ -29,19 +29,23 @@ providerRoute.get("/availability/search", async (req, res) => {
 
 providerRoute.post("/", async (req, res) => {
   try {
-    await providerController.createProvider(
+    console.log(`alex starting provider route`);
+    let provider = await providerController.createProvider(
       req.body.firstName,
       req.body.lastName,
       req.body.email,
       req.body.phone,
       req.body.availabilities,
     );
-    return res.status(200);
+    res.status(200).json({ provider });
   } catch (error) {
     if (error instanceof ResponseError) {
-      return res.status(error.status);
+      res.status(error.status).json({ error });
     } else {
-      return res.status(500);
+      res.status(500).json({
+        status: 500,
+        message: "Internal Server Error",
+      });
     }
   }
 });

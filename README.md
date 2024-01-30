@@ -54,7 +54,7 @@ Improvements:
 
 Left Off:
 
-- Work on routing tests
+- Work on routing tests in postman
 
 - Work on bull mq
 - Work on tests

@@ -3,7 +3,7 @@ import { ProfilingIntegration } from "@sentry/profiling-node";
 import express from "express";
 import { SENTRY_DSN } from "./config/environment";
 // import { bookingRoute, providerRoute, clientRoute } from "./routes/";
-import { providerRoute } from "./routes/provider";
+import { providerRoute, clientRoute } from "./routes";
 import { Server } from "http";
 
 const app = express();
@@ -55,8 +55,7 @@ app.use(function onError(
 });
 
 app.use("/provider", providerRoute);
-// app.use("/client", clientRoute);
-// app.use("/booking", bookingRoute);
+app.use("/client", clientRoute);
 
 const server: Server = app.listen(3000, () => {
   console.log(`Server is running on http://localhost:3000`);

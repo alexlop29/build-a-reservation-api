@@ -42,6 +42,7 @@ class ProviderController {
     phone: string,
     availabilities: Availability[],
   ): Promise<Response | ResponseError> {
+    console.log(`alex in providercontroller: createProvider`);
     try {
       let provider = new Provider(
         firstName,
@@ -50,8 +51,11 @@ class ProviderController {
         phone,
         availabilities,
       );
+      console.log(`alex in providercontroller: new Provider`);
       await provider.validate();
+      console.log(`alex in providercontroller: validate`);
       await provider.save();
+      console.log(`alex in providercontroller: save`);
       return new Response(200, "OK");
     } catch (error) {
       if (error instanceof ResponseError) {

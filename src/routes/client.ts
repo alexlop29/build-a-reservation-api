@@ -1,28 +1,37 @@
-// import { Router, json } from "express";
-// import { ClientController } from "../controllers/client";
-// import { ResponseError } from "../handlers";
+import { Router, json } from "express";
+import { ClientController } from "../controllers/client";
+import { ResponseError } from "../handlers";
 
-// const clientRoute = Router();
-// clientRoute.use(json());
+const clientRoute = Router();
+clientRoute.use(json());
 
-// const clientController = new ClientController();
+const clientController = new ClientController();
 
-// clientRoute.post("/", async (req, res) => {
-//   try {
-//     await clientController.createClient(
-//       req.body.firstName,
-//       req.body.lastName,
-//       req.body.email,
-//       req.body.phone,
-//     );
-//     return res.status(200);
-//   } catch (error) {
-//     if (error instanceof ResponseError) {
-//       return res.status(error.status);
-//     } else {
-//       return res.status(500);
-//     }
-//   }
-// });
+clientRoute.post("/", async (req, res) => {
+  try {
+    await clientController.createClient(
+      req.body.firstName,
+      req.body.lastName,
+      req.body.email,
+      req.body.phone,
+    );
+    res.status(200).json({
+      status: 200,
+      message: "OK",
+    });
+  } catch (error) {
+    if (error instanceof ResponseError) {
+      res.status(error.status).json({
+        status: error.status,
+        message: error.message,
+      });
+    } else {
+      res.status(500).json({
+        status: 500,
+        message: "Internal Server Error",
+      });
+    }
+  }
+});
 
-// export { clientRoute };
+export { clientRoute };
