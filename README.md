@@ -1,6 +1,8 @@
 # reservation-api
 
+
 Contains a REST API to facilitate booking appointments between providers and clients
+
 
 ## 🏄 Getting Started
 
@@ -8,6 +10,7 @@ Contains a REST API to facilitate booking appointments between providers and cli
 docker-compose up --build -d --force-recreate
 docker-compose down
 ```
+
 
 ### 🔧 Core libraries
 
@@ -54,6 +57,7 @@ Improvements:
 
 # 🚧 To Do
 
+
 Left Off:
 
 - Work on routing tests in postman
@@ -69,6 +73,7 @@ Left Off:
 - Clean up the readme
 - Clean up the code!
 
+
 ```
  jest --config=src/tests/jest.config.json  --testPathPattern=src/tests/integration/provider.test.ts --forceExit
 
@@ -80,3 +85,4 @@ Left Off:
 
  jest --config=src/tests/jest.config.json  --testPathPattern=src/tests/routes/provider.test.ts --forceExit
 ```
+
