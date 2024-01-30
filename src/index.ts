@@ -2,6 +2,9 @@ import * as Sentry from "@sentry/node";
 import { ProfilingIntegration } from "@sentry/profiling-node";
 import express from "express";
 import { SENTRY_DSN } from "./config/environment.js";
+// import { bookingRoute, providerRoute, clientRoute } from "./routes/";
+import { providerRoute } from "./routes/provider.js";
+import { Server } from "http";
 
 const app = express();
 
@@ -51,4 +54,19 @@ app.use(function onError(
   res.end("\n");
 });
 
-app.listen(3000);
+app.use("/provider", providerRoute);
+// app.use("/client", clientRoute);
+// app.use("/booking", bookingRoute);
+
+const server: Server = app.listen(3000, () => {
+  console.log(`Server is running on http://localhost:3000`);
+});
+
+process.on("SIGTERM", () => {
+  console.log("SIGTERM signal received: closing HTTP server");
+  server.close(() => {
+    console.log("HTTP server closed");
+  });
+});
+
+export { server };

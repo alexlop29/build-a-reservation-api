@@ -1,6 +1,6 @@
 import { Router, json } from "express";
-import { ProviderController } from "../controllers/provider";
-import { ResponseError } from "../handlers";
+import { ProviderController } from "../controllers/provider.js";
+import { ResponseError } from "../handlers/error.js";
 
 const providerRoute = Router();
 providerRoute.use(json());

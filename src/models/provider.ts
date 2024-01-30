@@ -1,8 +1,8 @@
-import { provider } from "../database/";
-import { ResponseError, Response } from "../handlers/";
-import { booking } from "../database/";
-import { Availability, Booking } from "../types/";
-import { getWeekDay } from "../helpers";
+import { provider } from "../database/index.js";
+import { ResponseError, Response } from "../handlers/index.js";
+import { booking } from "../database/index.js";
+import { Availability, Booking } from "../types/index.js";
+import { getWeekDay } from "../helpers/index.js";
 const moment = require("moment");
 
 // The 15min time slots can be hanlded by the Booking Controller

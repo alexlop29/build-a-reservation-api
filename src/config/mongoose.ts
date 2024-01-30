@@ -1,5 +1,5 @@
-import { ResponseError } from "../handlers/error";
-import { MONGO_DB_URI } from "./environment";
+import { ResponseError } from "../handlers/index.js";
+import { MONGO_DB_URI } from "./environment.js";
 const mongoose = require("mongoose");
 import { captureException } from "@sentry/node";
 

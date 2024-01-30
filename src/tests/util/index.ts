@@ -1,4 +1,4 @@
-export { sampleProvider, existingProvider } from "./providers";
-export { initialize, validClientId, validProviderId } from "./setupMongoDB";
-export { sampleClient, existingClient } from "./clients";
-export { sampleBooking, existingBooking } from "./bookings";
+export { sampleProvider, existingProvider } from "./providers.js";
+export { initialize, validClientId, validProviderId } from "./setupMongoDB.js";
+export { sampleClient, existingClient } from "./clients.js";
+export { sampleBooking, existingBooking } from "./bookings.js";

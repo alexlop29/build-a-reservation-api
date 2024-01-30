@@ -54,10 +54,9 @@ Improvements:
 
 Left Off:
 
-- Work on controllers
-- Work on routes
 - Work on routing tests
 
+- Work on bull mq
 - Work on tests
 - Add indexes on the models
 - Include Mongoose ODM best practices

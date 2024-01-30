@@ -1,7 +1,8 @@
 import { Schema } from "mongoose";
-import { mongoose } from "../config/mongoose";
+import { mongoose } from "../config/mongoose.js";
 const uniqueValidator = require("mongoose-unique-validator");
-import { isEmail, isMobilePhone } from "validator";
+import pkg from 'validator';
+const { isEmail, isMobilePhone } = pkg;
 
 const clientSchema = new Schema({
   firstName: {

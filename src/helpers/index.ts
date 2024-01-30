@@ -1,2 +1,1 @@
-// export { getTimeSlots, TimeSlots } from "./getTimeSlots";
-export { getWeekDay } from "./getWeekDay";
+export { getWeekDay } from "./getWeekDay.js";

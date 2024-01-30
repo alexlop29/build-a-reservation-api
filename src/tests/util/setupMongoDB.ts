@@ -1,6 +1,6 @@
-import { mongoose } from "../../config/mongoose";
-import { provider, client, booking } from "../../database";
-import { existingProvider, existingClient, existingBooking } from "./index";
+import { mongoose } from "../../config/mongoose.js";
+import { provider, client, booking } from "../../database/index.js";
+import { existingProvider, existingClient, existingBooking } from "./index.js";
 
 let validClientId: string;
 let validProviderId: string;

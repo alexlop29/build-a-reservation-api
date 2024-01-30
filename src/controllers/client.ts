@@ -1,5 +1,5 @@
-import { ResponseError, Response } from "../handlers";
-import { Client } from "../models";
+import { ResponseError, Response } from "../handlers/index.js";
+import { Client } from "../models/index.js";
 
 class ClientController {
   constructor() {}

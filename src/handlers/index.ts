@@ -1,2 +1,2 @@
-export { ResponseError } from "./error";
-export { Response } from "./response";
+export { ResponseError } from "./error.js";
+export { Response } from "./response.js";

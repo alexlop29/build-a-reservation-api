@@ -1,8 +1,9 @@
 import { Schema } from "mongoose";
-import { mongoose } from "../config/mongoose";
+import { mongoose } from "../config/mongoose.js";
 const uniqueValidator = require("mongoose-unique-validator");
-import { isEmail, isMobilePhone } from "validator";
-import { availability } from "./availability";
+import pkg from 'validator';
+const { isEmail, isMobilePhone } = pkg;
+import { availability } from "./availability.js";
 
 /*
 - May want additional input validation on the time ranges

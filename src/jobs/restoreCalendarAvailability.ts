@@ -1,5 +1,5 @@
 import { Queue } from "bullmq";
-import { REDIS_HOST, REDIS_PORT } from "../config/environment";
+import { REDIS_HOST, REDIS_PORT } from "../config/environment.js";
 import { booking } from "../database/index.js";
 
 const moment = require("moment");

@@ -1,11 +1,11 @@
-import { Booking } from "../../models";
+import { Booking } from "../../models/index.js";
 import {
   sampleBooking,
   initialize,
   validClientId,
   validProviderId,
-} from "../util";
-import { ResponseError } from "../../handlers";
+} from "../util/index.js";
+import { ResponseError } from "../../handlers/index.js";
 const moment = require("moment");
 
 describe("Should describe a booking", () => {
