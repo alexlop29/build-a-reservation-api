@@ -25,11 +25,32 @@ class Booking {
     });
   }
 
-  async confirm(): Promise<Response | ResponseError> {
+  async getId(): Promise<Response | ResponseError> {
     try {
-      booking.update({ _id: this.id }, { status: "CONFIRMED" });
+      let existingBooking = await booking.findOne({
+        clientId: this.booking.clientId,
+        providerId: this.booking.providerId,
+        startsAt: this.booking.startsAt,
+      });
+      this.id = existingBooking._id;
+      console.log(this.id);
       return new Response(200, "OK");
     } catch (error: any) {
+      console.log(`alex in getId: ${error}`);
+      throw new ResponseError(400, "Bad Request");
+    }
+  }
+
+  async confirm(): Promise<Response | ResponseError> {
+    try {
+      let confirm = await booking.updateOne(
+        { _id: this.id },
+        { status: "CONFIRMED" },
+      );
+      console.log(confirm);
+      return new Response(200, "OK");
+    } catch (error: any) {
+      console.log(error);
       throw new ResponseError(400, "Bad Request");
     }
   }

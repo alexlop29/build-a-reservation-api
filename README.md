@@ -55,7 +55,7 @@ Improvements:
 Left Off:
 
 - Work on routing tests in postman
-
+- bug: get provider availability is not correctly storing the bookings
 - Work on bull mq
 - Work on tests
 - Add indexes on the models

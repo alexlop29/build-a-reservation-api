@@ -45,6 +45,7 @@ class BookingController {
     status: string,
   ) {
     try {
+      console.log(`alex in confirm booking`);
       let booking = new Booking(
         clientId,
         providerId,
@@ -52,7 +53,9 @@ class BookingController {
         updatedAt,
         status,
       );
+      await booking.getId();
       await booking.confirm();
+      console.log(`alex after confirm booking`);
       return new Response(200, "OK");
     } catch (error) {
       if (error instanceof ResponseError) {
