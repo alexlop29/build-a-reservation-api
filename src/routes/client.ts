@@ -9,16 +9,13 @@ const clientController = new ClientController();
 
 clientRoute.post("/", async (req, res) => {
   try {
-    await clientController.createClient(
+    let client = await clientController.createClient(
       req.body.firstName,
       req.body.lastName,
       req.body.email,
       req.body.phone,
     );
-    res.status(200).json({
-      status: 200,
-      message: "OK",
-    });
+    res.status(200).json(client);
   } catch (error) {
     if (error instanceof ResponseError) {
       res.status(error.status).json({

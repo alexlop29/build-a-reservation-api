@@ -1,5 +1,6 @@
 import { ResponseError, Response } from "../handlers";
 import { Client } from "../models";
+import { captureException } from "@sentry/node";
 
 class ClientController {
   constructor() {}
@@ -9,13 +10,15 @@ class ClientController {
     lastName: string,
     email: string,
     phone: string,
-  ) {
+  ): Promise<Response | ResponseError> {
     try {
-      let client = new Client(firstName, lastName, email, phone);
+      let client = new Client();
+      await client.init(firstName, lastName, email, phone);
       await client.validate();
       await client.save();
       return new Response(200, "OK");
     } catch (error) {
+      captureException(error);
       if (error instanceof ResponseError) {
         throw error;
       } else {

@@ -2,7 +2,7 @@ import { Client } from "../../models";
 import { client } from "../../database";
 import { stub, SinonStub } from "sinon";
 import { ResponseError } from "../../handlers";
-import { sampleClient } from "../util";
+import { sampleClient, existingClient } from "../util";
 
 describe("Should describe a client", () => {
   let mockSave: SinonStub;
@@ -18,104 +18,140 @@ describe("Should describe a client", () => {
     mockValidate.restore();
   });
 
+  test("Should return 200, initalize the client, and store provided properties", async () => {
+    let provider = new Client();
+    let response = await provider.init(
+      sampleClient.firstName,
+      sampleClient.lastName,
+      sampleClient.email,
+      sampleClient.phone,
+    );
+    expect(response.status).toBe(200);
+    expect(response.message).toBe("OK");
+  });
+
   test("Should return 200 if the client's properties are valid", async () => {
-    let client = new Client(
+    let provider = new Client();
+    await provider.init(
       sampleClient.firstName,
       sampleClient.lastName,
       sampleClient.email,
       sampleClient.phone,
     );
     mockValidate.resolves();
-    const response = await client.validate();
+    const response = await provider.validate();
     expect(response.status).toBe(200);
     expect(response.message).toBe("OK");
   });
 
-  test("Should return 400 if client's first name is empty", () => {
-    let client = new Client(
+  test("Should return 400 if client's first name is empty", async () => {
+    let client = new Client();
+    await client.init(
       "",
       sampleClient.lastName,
       sampleClient.email,
       sampleClient.phone,
     );
     mockValidate.rejects();
-    expect(client.validate()).rejects.toThrow(
+    await expect(client.validate()).rejects.toThrow(
       new ResponseError(400, "Bad Request"),
     );
   });
 
-  test("Should return 400 if the client's last name is empty", () => {
-    let client = new Client(
+  test("Should return 400 if the client's last name is empty", async () => {
+    let client = new Client();
+    await client.init(
       sampleClient.firstName,
       "",
       sampleClient.email,
       sampleClient.phone,
     );
     mockValidate.rejects();
-    expect(client.validate()).rejects.toThrow(
+    await expect(client.validate()).rejects.toThrow(
       new ResponseError(400, "Bad Request"),
     );
   });
 
-  test("Should return 400 if the client's email is empty", () => {
-    let client = new Client(
+  test("Should return 400 if the client's email is empty", async () => {
+    let client = new Client();
+    await client.init(
       sampleClient.firstName,
       sampleClient.lastName,
       "",
       sampleClient.phone,
     );
     mockValidate.rejects();
-    expect(client.validate()).rejects.toThrow(
+    await expect(client.validate()).rejects.toThrow(
       new ResponseError(400, "Bad Request"),
     );
   });
 
-  test("Should return 400 if the client's email is invalid", () => {
-    let client = new Client(
+  test("Should return 400 if the client's email is invalid", async () => {
+    let client = new Client();
+    await client.init(
       sampleClient.firstName,
       sampleClient.lastName,
-      "23123@",
+      "2312312@",
       sampleClient.phone,
     );
     mockValidate.rejects();
-    expect(client.validate()).rejects.toThrow(
+    await expect(client.validate()).rejects.toThrow(
       new ResponseError(400, "Bad Request"),
     );
   });
 
-  test("Should return 400 if the client's phone number is empty", () => {
-    let client = new Client(
+  test("Should return 400 if the email address is already in use", async () => {
+    let client = new Client();
+    await client.init(
+      sampleClient.firstName,
+      sampleClient.lastName,
+      existingClient.email,
+      sampleClient.phone,
+    );
+    mockValidate.rejects();
+    await expect(client.validate()).rejects.toThrow(
+      new ResponseError(400, "Bad Request"),
+    );
+  });
+
+  test("Should return 400 if the client's phone number is empty", async () => {
+    let client = new Client();
+    await client.init(
       sampleClient.firstName,
       sampleClient.lastName,
       sampleClient.email,
       "",
     );
     mockValidate.rejects();
-    expect(client.validate()).rejects.toThrow(
+    await expect(client.validate()).rejects.toThrow(
       new ResponseError(400, "Bad Request"),
     );
   });
 
-  test("Should return 400 if the client's phone number is invalid", () => {
-    let client = new Client(
+  test("Should return 400 if the client's phone number is invalid", async () => {
+    let client = new Client();
+    await client.init(
       sampleClient.firstName,
       sampleClient.lastName,
       sampleClient.email,
-      "23123",
+      "2312",
     );
     mockValidate.rejects();
-    expect(client.validate()).rejects.toThrow(
+    await expect(client.validate()).rejects.toThrow(
       new ResponseError(400, "Bad Request"),
     );
   });
 
   test("Should return 200 and create a new client", async () => {
-    let client = new Client(
+    let client = new Client();
+    await client.init(
       sampleClient.firstName,
       sampleClient.lastName,
       sampleClient.email,
       sampleClient.phone,
     );
+    mockValidate.resolves();
+    await client.validate();
     mockSave.resolves({
       _id: "534534534535312131",
       firstName: sampleClient.firstName,

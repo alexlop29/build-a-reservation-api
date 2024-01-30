@@ -55,7 +55,7 @@ jest --config=src/tests/jest.config.json  --testPathPattern=src/tests/unit/ --fo
 Run an individual unit test
 
 ```
-jest --config=src/tests/jest.config.json  --testPathPattern=src/tests/unit/provider.test.ts --forceExit
+ jest --config=src/tests/jest.config.json  --testPathPattern=src/tests/unit/client.test.ts --forceExit
 ```
 
 Run an indivudal integration test
