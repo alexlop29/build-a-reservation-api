@@ -13,7 +13,7 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - name: Install modules
-        run: npm install && npm install -g jest
+        run: npm install --force && npm install -g jest
 
       - name: Run jest
         run: jest --config=src/tests/jest.config.json  --testPathPattern=src/tests/unit/ --forceExit
