@@ -4,6 +4,10 @@ import express from "express";
 import { SENTRY_DSN } from "./config/environment";
 import { providerRoute, clientRoute, bookingRoute } from "./routes";
 import { Server } from "http";
+import { createBullBoard } from "@bull-board/api";
+import { BullMQAdapter } from "@bull-board/api/bullMQAdapter.js";
+import { ExpressAdapter } from "@bull-board/express";
+import { Bookings, addJob } from "./jobs/restoreCalendarAvailability";
 
 const app = express();
 
@@ -53,9 +57,23 @@ app.use(function onError(
   res.end("\n");
 });
 
+const serverAdapter = new ExpressAdapter();
+createBullBoard({
+  queues: [new BullMQAdapter(Bookings)],
+  serverAdapter: serverAdapter,
+});
+serverAdapter.setBasePath("/admin");
+app.use("/admin", serverAdapter.getRouter());
+
 app.use("/provider", providerRoute);
 app.use("/client", clientRoute);
 app.use("/booking", bookingRoute);
+
+const expireBookingsJob = {
+  name: "expireBookings",
+};
+
+addJob(expireBookingsJob);
 
 const server: Server = app.listen(3000, () => {
   console.log(`Server is running on http://localhost:3000`);

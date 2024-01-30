@@ -19,6 +19,7 @@ docker-compose down
 - [Validator.js](https://github.com/validatorjs/validator.js)
 - [Moment.js](https://momentjs.com)
 - [bullmq](https://bullmq.io)
+- npm i express @bull-board/express
 
 ### 💻 Development Libraries
 
@@ -41,6 +42,7 @@ docker-compose down
 - [@types/express](https://www.npmjs.com/package/@types/express)
 - [@types/sinon](https://www.npmjs.com/package/@types/sinon)
 - [@types/validator](https://www.npmjs.com/package/@types/validator)
+- npm i --save-dev @types/redis-info
 
 # Disclaimers
 
