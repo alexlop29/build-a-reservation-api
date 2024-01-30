@@ -13,7 +13,7 @@ jobs:
           ref: ${{ github.head_ref }}
 
       - name: Install modules
-        run: npm install
+        run: npm install --force
 
       - name: Run ESLint
-        run: eslint . --ext .js,.jsx,.ts,.tsx
+        run: npm run eslint
