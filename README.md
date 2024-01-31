@@ -2,17 +2,6 @@
 
 Contains a REST API to facilitate booking appointments between providers and clients
 
-Table of Contents:
-
-- [🏄 Getting Started](#---getting-started)
-  - [🔧 Core libraries](#---core-libraries)
-  - [💻 Development Libraries](#---development-libraries)
-  - [📛 Types](#---types)
-- [🏭 Running Tests](#---running-tests)
-- [💎 Postman Collection](#---postman-collection)
-- [🚧 To Do](#---to-do)
-- [📑 Additional Readings](#---additional-readings)
-
 ## 🏄 Getting Started
 
 ```
