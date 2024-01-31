@@ -13,124 +13,171 @@ describe("Should describe a booking", () => {
     await initialize();
   });
 
-  // failing because the client and provider do not exist
-  // good test case to add, e.g. invalid client and providerid!
-  test("Should return 200 if the booking's properties are valid", async () => {
-    let booking = new Booking(
+  test("Should return 200, initalize the booking, and store provided properties", async () => {
+    let booking = new Booking();
+    let response = await booking.init(
       validClientId,
       validProviderId,
       sampleBooking.startsAt,
       sampleBooking.updatedAt,
       sampleBooking.status,
     );
-    const response = await booking.validate();
+    expect(response.status).toBe(200);
+    expect(response.message).toBe("OK");
+  });
+
+  test("Should return 200 if the booking's parameters are valid", async () => {
+    let booking = new Booking();
+    await booking.init(
+      validClientId,
+      validProviderId,
+      sampleBooking.startsAt,
+      sampleBooking.updatedAt,
+      sampleBooking.status,
+    );
+    const response = await booking.validateParams();
     expect(response.status).toBe(200);
     expect(response.message).toBe("OK");
   });
 
   test("Should return 400 if the booking's clientId is empty", async () => {
-    let booking = new Booking(
+    let booking = new Booking();
+    await booking.init(
       "",
-      sampleBooking.providerId,
+      validProviderId,
       sampleBooking.startsAt,
       sampleBooking.updatedAt,
       sampleBooking.status,
     );
-
-    await expect(booking.validate()).rejects.toThrow(
+    await expect(booking.validateParams()).rejects.toThrow(
       new ResponseError(400, "Bad Request"),
     );
   });
 
   test("Should return 400 if the booking's clientId does not exist", async () => {
-    let booking = new Booking(
+    let booking = new Booking();
+    await booking.init(
       sampleBooking.clientId,
-      sampleBooking.providerId,
+      validProviderId,
       sampleBooking.startsAt,
       sampleBooking.updatedAt,
       sampleBooking.status,
     );
-    await expect(booking.validate()).rejects.toThrow(
+    await expect(booking.validateParams()).rejects.toThrow(
       new ResponseError(400, "Bad Request"),
     );
   });
 
   test("Should return 400 if the booking's providerId is empty", async () => {
-    let booking = new Booking(
-      sampleBooking.clientId,
+    let booking = new Booking();
+    await booking.init(
+      validClientId,
       "",
       sampleBooking.startsAt,
       sampleBooking.updatedAt,
       sampleBooking.status,
     );
-
-    await expect(booking.validate()).rejects.toThrow(
+    await expect(booking.validateParams()).rejects.toThrow(
       new ResponseError(400, "Bad Request"),
     );
   });
 
   test("Should return 400 if the booking's providerId does not exist", async () => {
-    let booking = new Booking(
-      sampleBooking.clientId,
+    let booking = new Booking();
+    await booking.init(
+      validClientId,
       sampleBooking.providerId,
       sampleBooking.startsAt,
       sampleBooking.updatedAt,
       sampleBooking.status,
     );
-
-    await expect(booking.validate()).rejects.toThrow(
+    await expect(booking.validateParams()).rejects.toThrow(
       new ResponseError(400, "Bad Request"),
     );
   });
 
   test("Should return 400 if the booking's status is empty", async () => {
-    let booking = new Booking(
-      sampleBooking.clientId,
-      sampleBooking.providerId,
+    let booking = new Booking();
+    await booking.init(
+      validClientId,
+      validProviderId,
       sampleBooking.startsAt,
       sampleBooking.updatedAt,
       "",
     );
-    await expect(booking.validate()).rejects.toThrow(
+    await expect(booking.validateParams()).rejects.toThrow(
       new ResponseError(400, "Bad Request"),
     );
+  });
+
+  test("Should return 200 if the booking's status is valid", async () => {
+    let booking = new Booking();
+    await booking.init(
+      validClientId,
+      validProviderId,
+      sampleBooking.startsAt,
+      sampleBooking.updatedAt,
+      "CONFIRMED",
+    );
+    let response = await booking.validateStatus();
+    expect(response.status).toBe(200);
+    expect(response.message).toBe("OK");
   });
 
   test("Should return 400 if the booking's status is not an expected value", async () => {
-    let booking = new Booking(
-      sampleBooking.clientId,
-      sampleBooking.providerId,
+    let booking = new Booking();
+    await booking.init(
+      validClientId,
+      validProviderId,
       sampleBooking.startsAt,
       sampleBooking.updatedAt,
-      "VERIFY",
+      "BLOCKED",
     );
-    await expect(booking.validate()).rejects.toThrow(
+    await expect(booking.validateStatus()).rejects.toThrow(
       new ResponseError(400, "Bad Request"),
     );
   });
 
-  test("Should return 400 if the booking is less than 24hrs from now", async () => {
-    let booking = new Booking(
-      sampleBooking.clientId,
-      sampleBooking.providerId,
-      moment(),
-      sampleBooking.updatedAt,
-      sampleBooking.status,
-    );
-
-    await expect(booking.validate()).rejects.toThrow(
-      new ResponseError(400, "Bad Request"),
-    );
-  });
-
-  test("Should return 200 and create a new booking", async () => {
-    let booking = new Booking(
+  test("Should return 200 if the booking is at least 24hrs in advance", async () => {
+    let booking = new Booking();
+    await booking.init(
       validClientId,
       validProviderId,
       sampleBooking.startsAt,
       sampleBooking.updatedAt,
       sampleBooking.status,
     );
+    let response = await booking.validateTime();
+    expect(response.status).toBe(200);
+    expect(response.message).toBe("OK");
+  });
+
+  test("Should return 400 if the booking is not at least 24hrs in advance", async () => {
+    let booking = new Booking();
+    await booking.init(
+      validClientId,
+      validProviderId,
+      moment(),
+      sampleBooking.updatedAt,
+      sampleBooking.status,
+    );
+    await expect(booking.validateTime()).rejects.toThrow(
+      new ResponseError(400, "Bad Request"),
+    );
+  });
+
+  test("Should return 200 and create a new booking", async () => {
+    let booking = new Booking();
+    await booking.init(
+      validClientId,
+      validProviderId,
+      sampleBooking.startsAt,
+      sampleBooking.updatedAt,
+      sampleBooking.status,
+    );
+    await booking.validateParams();
+    await booking.validateStatus();
+    await booking.validateTime();
     const response = await booking.save();
     expect(response.status).toBe(200);
     expect(response.message).toBe("OK");

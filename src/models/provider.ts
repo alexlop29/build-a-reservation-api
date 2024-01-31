@@ -67,7 +67,7 @@ class Provider {
    * Saves the provider's information
    * Should be called after init(), validate()
    *
-   * @returns Response(200, "OK") || ResponseError(400, "Bad Request")
+   * @returns Response(200, "OK") || ResponseError(500, "Internal Server Error")
    */
   async save(): Promise<Response | ResponseError> {
     try {
@@ -80,7 +80,7 @@ class Provider {
   }
 
   /**
-   * Retrieves and stores the provider's id
+   * Retrieves and stores the provider's profile
    * @param email the provider's email
    *
    * @returns Response(200, "OK") || ResponseError(400, "Bad Request")

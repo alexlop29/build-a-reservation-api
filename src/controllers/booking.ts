@@ -12,14 +12,11 @@ class BookingController {
     status: string,
   ) {
     try {
-      let booking = new Booking(
-        clientId,
-        providerId,
-        startsAt,
-        updatedAt,
-        status,
-      );
-      await booking.validate();
+      let booking = new Booking();
+      await booking.init(clientId, providerId, startsAt, updatedAt, status);
+      await booking.validateParams();
+      await booking.validateStatus();
+      await booking.validateTime();
       await booking.save();
       return new Response(200, "OK");
     } catch (error) {
@@ -31,31 +28,11 @@ class BookingController {
     }
   }
 
-  // not a fan of this implementation
-  // should be able to confirm booking with the booking id.
-  // do not need all of this information.
-  // restrucutre classes to ask for parameters on the fucntion level(?)
-  // as opposed ot the object level!
-  // should also validate the existence of hte bookign first!
-  async confirmBooking(
-    clientId: string,
-    providerId: string,
-    startsAt: Date,
-    updatedAt: Date,
-    status: string,
-  ) {
+  async confirmBooking(clientId: string, providerId: string, startsAt: Date) {
     try {
-      console.log(`alex in confirm booking`);
-      let booking = new Booking(
-        clientId,
-        providerId,
-        startsAt,
-        updatedAt,
-        status,
-      );
-      await booking.getId();
+      let booking = new Booking();
+      await booking.get(clientId, providerId, startsAt);
       await booking.confirm();
-      console.log(`alex after confirm booking`);
       return new Response(200, "OK");
     } catch (error) {
       if (error instanceof ResponseError) {

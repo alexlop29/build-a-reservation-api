@@ -7,9 +7,9 @@ const bookingController = new BookingController();
 const bookingRoute = Router();
 bookingRoute.use(json());
 
-bookingRoute.post("/confirm", async (req, res) => {
+bookingRoute.post("/", async (req, res) => {
   try {
-    await bookingController.confirmBooking(
+    await bookingController.createBooking(
       req.body.clientId,
       req.body.providerId,
       req.body.startsAt,
@@ -35,14 +35,12 @@ bookingRoute.post("/confirm", async (req, res) => {
   }
 });
 
-bookingRoute.post("/", async (req, res) => {
+bookingRoute.post("/confirm", async (req, res) => {
   try {
-    await bookingController.createBooking(
+    await bookingController.confirmBooking(
       req.body.clientId,
       req.body.providerId,
       req.body.startsAt,
-      req.body.updatedAt,
-      req.body.status,
     );
     res.status(200).json({
       status: 200,
