@@ -133,3 +133,4 @@ dist
 .sentryclirc
 
 lib/
+.DS_Store
