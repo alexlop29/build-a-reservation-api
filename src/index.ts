@@ -9,72 +9,62 @@ import { BullMQAdapter } from "@bull-board/api/bullMQAdapter.js";
 import { ExpressAdapter } from "@bull-board/express";
 import { Bookings, addJob } from "./jobs/restoreCalendarAvailability";
 
+/*
+Initalizes the application
+*/
 const app = express();
 
+/*
+Configures Sentry
+*/
 Sentry.init({
   dsn: SENTRY_DSN,
   integrations: [
-    // enable HTTP calls tracing
     new Sentry.Integrations.Http({ tracing: true }),
-    // enable Express.js middleware tracing
     new Sentry.Integrations.Express({ app }),
     new ProfilingIntegration(),
   ],
-  // Performance Monitoring
-  tracesSampleRate: 1.0, //  Capture 100% of the transactions
-  // Set sampling rate for profiling - this is relative to tracesSampleRate
+  tracesSampleRate: 1.0,
   profilesSampleRate: 1.0,
 });
-
-// The request handler must be the first middleware on the app
 app.use(Sentry.Handlers.requestHandler());
-
-// TracingHandler creates a trace for every incoming request
 app.use(Sentry.Handlers.tracingHandler());
-
-// All your controllers should live here
-app.get("/", function rootHandler(_req, res) {
-  res.end("Hello world!");
-});
-
-app.get("/debug-sentry", function mainHandler(_req, _res) {
-  throw new Error("My first Sentry error!");
-});
-
-// The error handler must be registered before any other error middleware and after all controllers
 app.use(Sentry.Handlers.errorHandler());
-
-// // Optional fallthrough error handler
 app.use(function onError(
   _err: Error,
   _req: express.Request,
   res: express.Response,
   _next: express.NextFunction,
 ) {
-  // The error id is attached to `res.sentry` to be returned
-  // and optionally displayed to the user for support.
   res.statusCode = 500;
   res.end("\n");
 });
 
+/*
+Configures BullMQ
+*/
 const serverAdapter = new ExpressAdapter();
 createBullBoard({
   queues: [new BullMQAdapter(Bookings)],
   serverAdapter: serverAdapter,
 });
-serverAdapter.setBasePath("/admin");
-app.use("/admin", serverAdapter.getRouter());
+serverAdapter.setBasePath("/bullmq");
+app.use("/bullmq", serverAdapter.getRouter());
+const expireBookingsJob = {
+  name: "expireBookings",
+};
+addJob(expireBookingsJob);
 
+/*
+Enables routes
+*/
 app.use("/provider", providerRoute);
 app.use("/client", clientRoute);
 app.use("/booking", bookingRoute);
 
-const expireBookingsJob = {
-  name: "expireBookings",
-};
-
-addJob(expireBookingsJob);
-
+/*
+Handles starting and stopping the application
+*/
 const server: Server = app.listen(3000, () => {
   console.log(`Server is running on http://localhost:3000`);
 });

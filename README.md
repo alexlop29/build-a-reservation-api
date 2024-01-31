@@ -1,11 +1,22 @@
-# reservation-api
+## About
 
 Contains a REST API to facilitate booking appointments between providers and clients
+
+Table of Contents:
+
+- [🏄 Getting Started](#---getting-started)
+  - [🔧 Core libraries](#---core-libraries)
+  - [💻 Development Libraries](#---development-libraries)
+  - [📛 Types](#---types)
+- [🏭 Running Tests](#---running-tests)
+- [💎 Postman Collection](#---postman-collection)
+- [🚧 To Do](#---to-do)
+- [📑 Additional Readings](#---additional-readings)
 
 ## 🏄 Getting Started
 
 ```
-docker-compose up --build -d --force-recreate
+docker-compose up --build -d
 docker-compose down
 ```
 
@@ -19,7 +30,8 @@ docker-compose down
 - [Validator.js](https://github.com/validatorjs/validator.js)
 - [Moment.js](https://momentjs.com)
 - [bullmq](https://bullmq.io)
-- npm i express @bull-board/express
+- [@bull-board/express](https://www.npmjs.com/package/@bull-board/express)
+- [sentry](https://docs.sentry.io/platforms/node/guides/express/)
 
 ### 💻 Development Libraries
 
@@ -32,19 +44,18 @@ docker-compose down
 - [Sinon.js](https://sinonjs.org)
 - [nodemon](https://nodemon.io)
 - [typedoc](https://typedoc.org)
-- [sentry](https://docs.sentry.io/platforms/node/guides/express/?original_referrer=https%3A%2F%2Fwww.google.com%2F)
 - [postman](https://www.postman.com)
 - [docker](https://docs.docker.com/)
 
 ### 📛 Types
 
-- [@types/jest](https://www.npmjs.com/package/@types/jest)
 - [@types/express](https://www.npmjs.com/package/@types/express)
+- [@types/jest](https://www.npmjs.com/package/@types/jest)
+- [@types/redis-info](https://www.npmjs.com/package/@types/redis-info)
 - [@types/sinon](https://www.npmjs.com/package/@types/sinon)
 - [@types/validator](https://www.npmjs.com/package/@types/validator)
-- npm i --save-dev @types/redis-info
 
-## Running Tests
+## 🏭 Running Tests
 
 Run all unit tests
 
@@ -64,45 +75,21 @@ Run an indivudal integration test
 jest --config=src/tests/jest.config.json  --testPathPattern=src/tests/integration/provider.test.ts --forceExit
 ```
 
-## Include a link to the Postman collection!
+- Requires launching the application via Docker.
 
-# Disclaimers
+## 💎 Postman Collection
 
-- Use of `npm --force` to install [mongoose-unique-validator](https://www.npmjs.com/package/mongoose-unique-validator)
+[Click here to access the postman collection.](https://app.getpostman.com/join-team?invite_code=ae9e7ef85d41be2cdb7ceec4042fa885&target_code=0c7fc7577760072734a4059e9275fa12)
 
-Improvements:
-
-- Add necessary CRUD operations.
-- Need to account for timezone differences
-
-# 🚧 To Do
-
-Left Off:
-
-- bug: get provider availability is not correctly storing the bookings
-- Work on tests
-- Add indexes on the models
-- Include Mongoose ODM best practices
-- Include Express.js best practices
-- Rename
-- Clean up the readme
-- Clean up the code!
+## 🚧 To Do
 
 Improvement:
 
 - Implement health checks to gracefully start and stop the application. (e.g. src/config/mongoose)
-- Improve input validation on the mongoose schemas. (E.g. src/database/availability);
+- Improve application performance by leveraging indexes on the mongoose models.
 
-```
- jest --config=src/tests/jest.config.json  --testPathPattern=src/tests/integration/provider.test.ts --forceExit
+## 📑 Additional Readings
 
- jest --config=src/tests/jest.config.json  --testPathPattern=src/tests/integration/booking.test.ts --forceExit
-
-
- jest --config=src/tests/jest.config.json  --testPathPattern=src/tests/integration/client.test.ts --forceExit
-
-
- jest --config=src/tests/jest.config.json  --testPathPattern=src/tests/routes/provider.test.ts --forceExit
-```
-
-https://betterstack.com/community/guides/scaling-nodejs/bullmq-scheduled-tasks/
+- [Slow Trains in MongoDB and Node.js](https://thecodebarbarian.com/slow-trains-in-mongodb-and-nodejs)
+- [Express.js - Best Practices Performance](https://expressjs.com/en/advanced/best-practice-performance.html)
+- [Express.js - Best Practices Security](https://expressjs.com/en/advanced/best-practice-security.html)
